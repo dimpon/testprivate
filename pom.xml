@@ -31,12 +31,12 @@
         <url>https://github.com/dimpon/testprivate/tree/master</url>
     </scm>
 
-    <distributionManagement>
+    <!--<distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-    </distributionManagement>
+    </distributionManagement>-->
 
   
   <properties>
