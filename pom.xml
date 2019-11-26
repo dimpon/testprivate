@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.github.dimpon</groupId>
+    <artifactId>testprivate</artifactId>
+    <packaging>pom</packaging>
+    <version>1.1.0-SNAPSHOT</version>
+
+  <name>testprivate</name>
+    <description>Library for testing private methods and fields </description>
+    <url>http://github.com/nblxa/cons-list</url>
+    <licenses>
+        <license>
+            <name>The Unlicense</name>
+            <url>https://unlicense.org/</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Dmitrii Ponomarev</name>
+            <email>dimpon@gmail.com</email>
+            <organizationUrl>https://github.com/dimpon</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git://github.com/dimpon/testprivate.git</connection>
+        <developerConnection>scm:git:ssh://github.com:dimpon/testprivate.git</developerConnection>
+        <url>https://github.com/dimpon/testprivate/tree/master</url>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+
+
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.4.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.4.2</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+
+  </build>
+</project>

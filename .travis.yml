@@ -1,0 +1,19 @@
+language: java
+jdk:
+  - openjdk8
+before_install: scripts/before_install.sh
+script:
+  - "./mvnw org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=cons-list -B"
+after_success:
+  - "./mvnw clean test jacoco:report coveralls:report -e -B"
+addons:
+  sonarcloud:
+    organization: nblxa
+    token:
+      secure: "zbY2Gps65LvXhx0w70h5B/+r/A0InCNiic76XY2fI5dsbiYe07fAdUITuRNRNhRK707wsVPfdYv4jlgS/jWesLPoDIFRzInER/ACENezso+TLVT2bVSDovdiu+yOOHHtvlCmWoHGwdJAyvb1OiDeknr6LOA25pEIXTpeBag3qTGwLVTKmMvvVk5C+vgL/Nh+pUS+vRQoj2I5XczBCwZeytnVuhupPP92gOP0cw9LNVElSMUSf9/7XE1stjKLBmyHbvhlnbeL3VcC3mG7H+meTdAd8Q+/M0680FzayJWehNSKda1g+Gqq/sYBK5BJhjvhCEW7bDkgAW4RDTY+ta2V67GUplAx3uAIBsYy0qhrqPS0AH4FIi14Bkr/JscZekBvbweCZDHHOaw0c2KOCyMfKBlDfvsz54QFdNBUW+vwws268EGDiX3CkmzxmvBjTdQeOwABgP14W89vYNH8VfB96jGHaE74xwG26IUYroVhvjhWnpU8yChk21A9NP6YjvJbdvMu3OkdVQDuPD6FRsW6dN1xYe0VuRW/hjZa+3wh+d61l1N2chEfxr5PJTmYXP9kkgSAAPRhKU5+zooWx27OtJqgoK6tY4SokSE8fuWYlN8JuSo7JIz1FHtX53SX55U/wlmnUfyo3Bv3qjZuwk9zpV0T7W/mTUFPJ314VhU8/Sk="
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(master|release/[0-9]+)$
