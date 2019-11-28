@@ -1,9 +1,34 @@
+/*
+ * Copyright (C) 2019 The Project Testprivate Authors.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 package io.github.dimpon.testprivate;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+/**
+ * Class allows to call methods of object using arbitrary interface containing the same methods.
+ * Uses Dynamic Proxy for searching the right methods.
+ */
 public final class Instance {
 
     private Object obj;
@@ -12,10 +37,22 @@ public final class Instance {
         this.obj = obj;
     }
 
-    public static Instance Instance(Object obj) {
+    /**
+     * Factory method creates the instance of Instance
+     * @param obj object is needed to be tested
+     * @return Instance object
+     */
+    public static Instance instance(Object obj) {
         return new Instance(obj);
     }
 
+    /**
+     * Generats dynamic proxy for interfaceClass interface
+     *
+     * @param interfaceClass
+     * @param <T>
+     * @return instance of  interfaceClass
+     */
     @SuppressWarnings("unchecked")
     public <T> T castTo(Class<T> interfaceClass) {
 
