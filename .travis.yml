@@ -16,4 +16,4 @@ deploy:
     repo: dimpon/testprivate
     #type: push
     #commit_message: 'release'
-    condition: commit_message ='release'
+    condition: (commit_message ='release')
