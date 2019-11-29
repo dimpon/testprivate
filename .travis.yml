@@ -3,3 +3,14 @@ jdk:
   - openjdk8
 before_install:
   - chmod +x mvnw
+before_deploy:
+  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+deploy:
+  provider: script
+  script: scripts/deploy.sh
+  on:
+    repo: dimpon/testprivate
+    #type: push
+    #commit_message: 'release'
+    condition: $Tcommit_message ='release'
