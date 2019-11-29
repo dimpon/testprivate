@@ -38,14 +38,12 @@
         <developerConnection>scm:git:ssh://github.com:dimpon/testprivate.git</developerConnection>
         <url>https://github.com/dimpon/testprivate/tree/master</url>
     </scm>
-
     <!--<distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>-->
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
