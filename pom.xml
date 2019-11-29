@@ -47,7 +47,6 @@
         </snapshotRepository>
     </distributionManagement>-->
 
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -55,8 +54,6 @@
     </properties>
 
     <dependencies>
-
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -69,9 +66,7 @@
             <version>5.4.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-
     <build>
 
     </build>
