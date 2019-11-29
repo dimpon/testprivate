@@ -17,5 +17,5 @@ deploy:
     #type: push
     #commit_message: 'release'
     commit_message: release
-    tags: true
+    tags: false
     all_branches: true
