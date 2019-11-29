@@ -13,7 +13,6 @@
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
 
-
     <issueManagement>
         <url>https://github.com/dimpon/testprivate/issues</url>
         <system>GitHub Issues</system>
@@ -68,6 +67,5 @@
         </dependency>
     </dependencies>
     <build>
-
     </build>
 </project>
