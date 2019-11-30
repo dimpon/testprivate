@@ -8,7 +8,7 @@ before_install:
 install: true
 script:
   - ./mvnw clean package
-  - bash <(curl -s https://codecov.io/bash)
+  #- bash <(curl -s https://codecov.io/bash)
 
 #before_deploy:
 #  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
