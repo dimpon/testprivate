@@ -10,19 +10,23 @@ script:
   - ./mvnw clean package
   #- bash <(curl -s https://codecov.io/bash)
 
-#before_deploy:
-#  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-#  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+before_deploy:
+  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+
 deploy:
-  provider: script
-  script: scripts/deploy.sh
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  overwrite: true
+
+  file:
+    - target/testprivate-$project_version.jar
+    s
+  skip_cleanup: true
   on:
-    repo: dimpon/testprivate
-    #type: push
-    #commit_message: 'release'
+    repo: dimpon/happycube
     tags: true
-    all_branches: true
-    #condition: $COMMIT_MESSAGE = 'release'
+  name: $project_version
 
 cache:
   directories:
