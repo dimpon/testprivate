@@ -6,16 +6,17 @@ before_install:
   #- chmod +x scripts/deploy.sh
 install:
   echo 'install'
-before_deploy:
-  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+#before_deploy:
+#  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+#  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 deploy:
   provider: script
   script: scripts/deploy.sh
   on:
-    repo: dimpon/testprivate
+    #repo: dimpon/testprivate
     #type: push
     #commit_message: 'release'
-    commit_message: 'release'
-    tags: false
+    #commit_message: 'release'
+    #tags: false
     all_branches: true
+    condition: $COMMIT_MESSAGE =~ ^(release)$
