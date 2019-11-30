@@ -16,6 +16,6 @@ deploy:
     repo: dimpon/testprivate
     #type: push
     #commit_message: 'release'
-    commit_message: release
+    commit_message: 'release'
     tags: false
     all_branches: true
