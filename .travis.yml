@@ -13,6 +13,10 @@ script:
 before_deploy:
   - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - git config --local user.name $GITHUB_USERNAME
+  - git config --local user.email $GITHUB_EMAIL
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  - git tag $TRAVIS_TAG
 
 deploy:
   provider: releases
@@ -21,11 +25,12 @@ deploy:
 
   file:
     - target/testprivate-$project_version.jar
-    s
+
   skip_cleanup: true
   on:
-    repo: dimpon/happycube
-    tags: true
+    repo: dimpon/testprivate
+    tags: false
+    condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
   name: $project_version
 
 cache:
