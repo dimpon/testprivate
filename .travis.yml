@@ -25,6 +25,8 @@ deploy:
 
   file:
     - target/testprivate-$project_version.jar
+    - target/testprivate-$project_version-javadoc.jar
+    - target/testprivate-$project_version-sources.jar
 
   skip_cleanup: true
   on:
@@ -32,6 +34,8 @@ deploy:
     tags: false
     condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
   name: $project_version
+
+after_deploy: ignore
 
 cache:
   directories:
