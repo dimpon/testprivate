@@ -18,8 +18,8 @@ before_deploy:
   #- git tag $TRAVIS_TAG
   - git stash
   - git checkout -f $TRAVIS_BRANCH
-  - mvn -B release:prepare -DskipTests=true --settings .maven.xml
-  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - ./mvnw -B release:prepare -DskipTests=true --settings .maven.xml
+  - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 
 deploy:
