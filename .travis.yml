@@ -19,7 +19,7 @@ before_deploy:
   - git stash
   - git checkout -f $TRAVIS_BRANCH
   - chmod +x mvnw
-  - ./mvnw -B release:prepare -DskipTests=true
+  - ./mvnw -B release:prepare -DskipTests=true --settings .github.xml
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 
