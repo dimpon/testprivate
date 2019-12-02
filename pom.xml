@@ -38,7 +38,7 @@
         <developerConnection>scm:git:https://github.com:dimpon/testprivate.git</developerConnection>
         <url>https://github.com/dimpon/testprivate/tree/master</url>
     </scm>
-    
+
 
     <!--<distributionManagement>
         <snapshotRepository>
