@@ -2,12 +2,12 @@ language: java
 jdk:
   - openjdk8
 before_install:
-  #- chmod +x mvnw
+  - chmod +x mvnw
   #- chmod +x scripts/deploy.sh
 
 install: true
 script:
-  - "./mvnw clean package"
+  - ./mvnw clean package
   #- bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
@@ -16,7 +16,8 @@ before_deploy:
   - git config --local user.email $GITHUB_EMAIL
   #- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
   #- git tag $TRAVIS_TAG
-  - mvn -B release:prepare
+  - git stash
+  - mvn -B release:prepare -DskipTests=true
   - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 
