@@ -22,6 +22,7 @@ before_deploy:
   - ./mvnw -B release:prepare -DskipTests=true --settings .github.xml
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - git checkout HEAD^
 
 deploy:
   provider: releases
