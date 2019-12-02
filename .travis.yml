@@ -11,12 +11,14 @@ script:
   #- bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
-  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
-  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+
   - git config --local user.name $GITHUB_USERNAME
   - git config --local user.email $GITHUB_EMAIL
-  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-  - git tag $TRAVIS_TAG
+  #- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+  #- git tag $TRAVIS_TAG
+  - mvn -B release:prepare
+  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 
 deploy:
   provider: releases
