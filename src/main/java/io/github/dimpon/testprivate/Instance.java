@@ -47,9 +47,9 @@ public final class Instance {
     }
 
     /**
-     * Generats dynamic proxy for interfaceClass interface
+     * Generates dynamic proxy for interfaceClass interface
      *
-     * @param interfaceClass
+     * @param interfaceClass interface for proxing original object
      * @param <T>
      * @return instance of  interfaceClass
      */
