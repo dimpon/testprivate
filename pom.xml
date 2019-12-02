@@ -6,7 +6,7 @@
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.0.6-SNAPSHOT</version>
+    <version>0.0.7-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
