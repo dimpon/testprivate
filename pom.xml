@@ -34,10 +34,12 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/dimpon/testprivate.git</connection>
-        <developerConnection>scm:git:ssh://github.com:dimpon/testprivate.git</developerConnection>
+        <connection>scm:git:https://github.com/dimpon/testprivate.git</connection>
+        <developerConnection>scm:git:https://github.com:dimpon/testprivate.git</developerConnection>
         <url>https://github.com/dimpon/testprivate/tree/master</url>
     </scm>
+    
+
     <!--<distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
