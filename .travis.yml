@@ -18,6 +18,7 @@ before_deploy:
   #- git tag $TRAVIS_TAG
   - git stash
   - git checkout -f $TRAVIS_BRANCH
+  - chmod +x mvnw
   - ./mvnw -B release:prepare -DskipTests=true
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')

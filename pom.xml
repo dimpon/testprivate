@@ -6,6 +6,7 @@
     <groupId>io.github.dimpon</groupId>
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
+
     <version>0.0.5-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
@@ -33,7 +34,7 @@
     </developers>
     <scm>
         <!--<connection>scm:git:https://github.com/dimpon/testprivate.git</connection>-->
-        <connection>scm:git:http://${GITHUB_USERNAME}:${GITHUB_PASS}@github.com/dimpon/testprivate.git</connection>
+        <connection>scm:git:http://${env.GITHUB_USERNAME}:${env.GITHUB_PASS}@github.com/dimpon/testprivate.git</connection>
         <developerConnection>scm:git:https://github.com/dimpon/testprivate.git</developerConnection>
         <url>https://github.com/dimpon/testprivate/tree/master</url>
       <tag>HEAD</tag>
