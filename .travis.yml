@@ -2,12 +2,12 @@ language: java
 jdk:
   - openjdk8
 before_install:
-  - chmod +x mvnw
+  #- chmod +x mvnw
   #- chmod +x scripts/deploy.sh
 
 install: true
 script:
-  - ./mvnw clean package
+  - "./mvnw clean package"
   #- bash <(curl -s https://codecov.io/bash)
 
 before_deploy:
