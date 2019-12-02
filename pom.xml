@@ -40,8 +40,6 @@
       <tag>HEAD</tag>
   </scm>
 
-    
-
     <!--<distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -85,6 +83,9 @@
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <releaseProfiles>releases</releaseProfiles>
                     <goals>install</goals>
+                    <checkModificationExcludes>
+                        <checkModificationExclude>mvnw</checkModificationExclude>
+                    </checkModificationExcludes>
                 </configuration>
             </plugin>
 

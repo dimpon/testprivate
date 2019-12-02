@@ -16,9 +16,9 @@ before_deploy:
   - git config --local user.email $GITHUB_EMAIL
   #- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
   #- git tag $TRAVIS_TAG
-  - git stash
-  - git checkout -f $TRAVIS_BRANCH
-  - chmod +x mvnw
+  #- git stash
+  #- git checkout -f $TRAVIS_BRANCH
+  #- chmod +x mvnw
   - ./mvnw -B release:prepare -DskipTests=true
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
