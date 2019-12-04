@@ -1,4 +1,4 @@
-package org.deprivatortest.io.github.dimpon.testprivate;
+package io.github.dimpon.testprivate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

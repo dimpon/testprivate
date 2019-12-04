@@ -1,4 +1,4 @@
-package org.deprivatortest.io.github.dimpon.testprivate;
+package io.github.dimpon.testprivate;
 
 public class ObjectWithPrivateMethod {
 

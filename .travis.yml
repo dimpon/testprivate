@@ -1,47 +1,23 @@
+sudo: false
 language: java
 jdk:
   - openjdk8
 before_install:
   - chmod +x mvnw
-  #- chmod +x scripts/deploy.sh
-
-install: true
-script:
-  - ./mvnw clean package
-  #- bash <(curl -s https://codecov.io/bash)
-
-before_deploy:
-
-  - git config --local user.name $GITHUB_USERNAME
-  - git config --local user.email $GITHUB_EMAIL
-  #- export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-  #- git tag $TRAVIS_TAG
-  - git stash
-  - git checkout -f $TRAVIS_BRANCH
+before_script:
   - chmod +x mvnw
-  - ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .github.xml
-  - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
-  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
-
-deploy:
-  provider: releases
-  api_key: $GITHUB_OAUTH_TOKEN
-  overwrite: true
-
-  file:
-    - target/testprivate-$project_version.jar
-    - target/testprivate-$project_version-javadoc.jar
-    - target/testprivate-$project_version-sources.jar
-
-  skip_cleanup: true
-  on:
-    repo: dimpon/testprivate
-    tags: false
-    condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
-  name: $project_version
-
-after_deploy: ignore
-
+script: ./mvnw clean verify
 cache:
   directories:
     - $HOME/.m2
+before_deploy:
+  - chmod +x mvnw
+  - chmod +x .travis/release.sh
+deploy:
+  provider: script
+  script: .travis/release.sh
+  skip_cleanup: true
+  on:
+    repo: dimpon/testprivate
+    tags: true
+    jdk: openjdk8
