@@ -22,7 +22,31 @@ cache:
     - $HOME/.m2
 before_deploy:
   - chmod +x mvnw
-  - chmod +x .travis/release.sh
+  - git config --local user.name $GITHUB_USERNAME
+  - git config --local user.email $GITHUB_EMAIL
+  - ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xm
+  - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - export TRAVIS_TAG=$project_version
+  - git tag $TRAVIS_TAG
+
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  overwrite: true
+
+  file:
+    - target/testprivate-$project_version.jar
+    - target/testprivate-$project_version-javadoc.jar
+    - target/testprivate-$project_version-sources.jar
+
+  skip_cleanup: true
+  on:
+    repo: dimpon/testprivate
+    tags: false
+    condition: $TRAVIS_COMMIT_MESSAGE =~ ^(github)$
+  name: $project_version
 
 #deploy:
 #  provider: script
