@@ -30,7 +30,7 @@ before_deploy:
   #- ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xm
   #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
-  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-project_version}
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$project_version}
   #- git tag $TRAVIS_TAG
   - echo $TRAVIS_TAG
   - git tag $TRAVIS_TAG

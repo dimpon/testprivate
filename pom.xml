@@ -35,7 +35,6 @@
     <scm>
         <connection>scm:git:https://github.com/dimpon/testprivate.git</connection>
         <developerConnection>scm:git:https://github.com/dimpon/testprivate.git</developerConnection>
-
         <url>https://github.com/dimpon/testprivate</url>
         <tag>HEAD</tag>
     </scm>
