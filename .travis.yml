@@ -23,14 +23,15 @@ cache:
 
 before_deploy:
   - chmod +x mvnw
-  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - ./mvnw build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion} versions:commit
+  - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
   - git config --local user.name $GITHUB_USERNAME
   - git config --local user.email $GITHUB_EMAIL
   #- ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xm
   #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
-  - mvn build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion} versions:commit
+
   - export TRAVIS_TAG=${TRAVIS_TAG:-$project_version}
   #- git tag $TRAVIS_TAG
   - echo $TRAVIS_TAG
