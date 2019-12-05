@@ -13,9 +13,11 @@ before_install:
 before_script:
   - chmod +x mvnw
 
-install: ./mvnw --settings .travis/settings.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+install: ./mvnw --settings .travis/settings.xml package -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 
 #script: ./mvnw clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+
+script: ./mvnw -version
 
 cache:
   directories:
