@@ -23,22 +23,25 @@ cache:
 
 before_deploy:
   - chmod +x mvnw
-  - ./mvnw build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion} versions:commit
-  - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
-  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
-  - git config --local user.name $GITHUB_USERNAME
-  - git config --local user.email $GITHUB_EMAIL
+  - ./mvnw release:clean release:prepare release:perform --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+  #- ./mvnw -B release:clean release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
+  #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
+  #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  #- git config --local user.name $GITHUB_USERNAME
+  #- git config --local user.email $GITHUB_EMAIL
   #- ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xm
   #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 
-  - export TRAVIS_TAG=${TRAVIS_TAG:-$project_version}
+  #- export TRAVIS_TAG=${TRAVIS_TAG:-$project_version}
   #- git tag $TRAVIS_TAG
-  - echo $TRAVIS_TAG
-  - git tag $TRAVIS_TAG
+  #- echo $TRAVIS_TAG
+  #- git tag $TRAVIS_TAG
 
 
 deploy:
+
+
   provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   overwrite: true

@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!-- current version is 0.0.19-SNAPSHOT -->
+    <!-- current version is 0.0.20-SNAPSHOT  -->
     <groupId>io.github.dimpon</groupId>
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.0.19-SNAPSHOT</version>
+    <version>0.0.20-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
@@ -160,6 +160,21 @@
             <id>release</id>
             <build>
                 <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>${maven.release.plugin.version}</version>
+                        <configuration>
+                            <tagNameFormat>v@{project.version}</tagNameFormat>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <releaseProfiles>releases</releaseProfiles>
+                            <goals>install</goals>
+                            <checkModificationExcludes>
+                                <checkModificationExclude>mvnw</checkModificationExclude>
+                            </checkModificationExcludes>
+                        </configuration>
+                    </plugin>
 
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
