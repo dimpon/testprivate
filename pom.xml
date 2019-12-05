@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!-- current version is 0.0.9-SNAPSHOT -->
     <groupId>io.github.dimpon</groupId>
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.0.16</version>
+    <version>0.0.18-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
@@ -36,7 +37,7 @@
         <developerConnection>scm:git:https://github.com/dimpon/testprivate.git</developerConnection>
 
         <url>https://github.com/dimpon/testprivate</url>
-        <tag>v0.0.16</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
@@ -119,6 +120,25 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
+
+                <configuration>
+                    <parallel>methods</parallel>
+                    <useUnlimitedThreads>true</useUnlimitedThreads>
+                    <perCoreThreadCount>true</perCoreThreadCount>
+                </configuration>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.platform</groupId>
+                        <artifactId>junit-platform-surefire-provider</artifactId>
+                        <version>1.0.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
         </plugins>
