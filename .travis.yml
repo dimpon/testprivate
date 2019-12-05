@@ -2,22 +2,33 @@ sudo: false
 language: java
 jdk:
   - openjdk8
+
 before_install:
   - chmod +x mvnw
+  - gpg --version
+  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch
+  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+
+
 before_script:
   - chmod +x mvnw
-script: ./mvnw clean verify
+
+install: ./mvnw --settings .travis/settings.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
+
+script: ./mvnw clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+
 cache:
   directories:
     - $HOME/.m2
 before_deploy:
   - chmod +x mvnw
   - chmod +x .travis/release.sh
-deploy:
-  provider: script
-  script: .travis/release.sh
-  skip_cleanup: true
-  on:
-    repo: dimpon/testprivate
-    tags: true
-    jdk: openjdk8
+
+#deploy:
+#  provider: script
+#  script: .travis/release.sh
+#  skip_cleanup: true
+#  on:
+#    repo: dimpon/testprivate
+#    tags: true
+#    jdk: openjdk8

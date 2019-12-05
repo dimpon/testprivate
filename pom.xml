@@ -7,7 +7,7 @@
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.0.8-SNAPSHOT</version>
+    <version>0.0.10-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
@@ -79,7 +79,6 @@
     </dependencies>
     <build>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
@@ -128,16 +127,16 @@
     <profiles>
         <profile>
             <id>release</id>
-            <pluginRepositories>
+            <!--<pluginRepositories>
                 <pluginRepository>
                     <id>bintray-cy6ergn0m-maven</id>
                     <name>bintray-plugins</name>
                     <url>http://dl.bintray.com/cy6ergn0m/maven</url>
                 </pluginRepository>
-            </pluginRepositories>
+            </pluginRepositories>-->
             <build>
                 <plugins>
-                    <plugin>
+                    <!--<plugin>
                         <groupId>cy.github</groupId>
                         <artifactId>github-release-plugin</artifactId>
                         <version>0.5.1</version>
@@ -154,7 +153,74 @@
                                 <phase>deploy</phase>
                             </execution>
                         </executions>
+                    </plugin>-->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
                     </plugin>
+                    <!-- To generate javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${maven.source.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>${maven.release.plugin.version}</version>
+                        <configuration>
+                            <tagNameFormat>v@{project.version}</tagNameFormat>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <releaseProfiles>releases</releaseProfiles>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${maven.javadoc.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+
                 </plugins>
             </build>
         </profile>

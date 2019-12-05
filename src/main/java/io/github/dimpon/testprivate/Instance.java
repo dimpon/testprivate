@@ -1,4 +1,6 @@
 /*
+ * The MIT License (MIT)
+ *
  * Copyright (C) 2019 The Project Testprivate Authors.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -50,7 +52,7 @@ public final class Instance {
      * Generates dynamic proxy for interfaceClass interface
      *
      * @param interfaceClass interface for proxing original object
-     * @param <T>
+     * @param <T> interface class
      * @return instance of  interfaceClass
      */
     @SuppressWarnings("unchecked")
