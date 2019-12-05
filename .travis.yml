@@ -23,7 +23,7 @@ cache:
 
 before_deploy:
   - chmod +x mvnw
-  - ./mvnw release:clean release:prepare release:perform --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+
   #- ./mvnw -B release:clean release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
   #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
@@ -41,15 +41,16 @@ before_deploy:
 
 deploy:
 
+  provider: script
+  script: ./mvnw release:prepare release:perform --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+  #provider: releases
+  #api_key: $GITHUB_OAUTH_TOKEN
+  #overwrite: true
 
-  provider: releases
-  api_key: $GITHUB_OAUTH_TOKEN
-  overwrite: true
-
-  file:
-    - target/testprivate-$project_version.jar
-    - target/testprivate-$project_version-javadoc.jar
-    - target/testprivate-$project_version-sources.jar
+  #file:
+  #  - target/testprivate-$project_version.jar
+  #  - target/testprivate-$project_version-javadoc.jar
+  #  - target/testprivate-$project_version-sources.jar
 
   skip_cleanup: true
   on:
