@@ -15,7 +15,7 @@ before_script:
 
 install: ./mvnw --settings .travis/settings.xml install -DskipTests=true -Dgpg.skip -Dmaven.javadoc.skip=true -B -V
 
-script: ./mvnw clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+#script: ./mvnw clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
 
 cache:
   directories:
@@ -47,7 +47,7 @@ deploy:
   skip_cleanup: true
   on:
     repo: dimpon/testprivate
-    tags: false
+    tags: true
     condition: $TRAVIS_COMMIT_MESSAGE =~ ^(github)$
   name: $project_version
 
