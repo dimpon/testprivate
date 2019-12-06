@@ -24,11 +24,19 @@ cache:
     - $HOME/.m2
 
 before_deploy:
-  - chmod +x mvnw
+  - git config --local user.name $GITHUB_USERNAME
+  - git config --local user.email $GITHUB_EMAIL
 
   #- ./mvnw -B release:clean release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
+  #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
+  #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - git stash
+  - git checkout -f $TRAVIS_BRANCH
+  - chmod +x mvnw
+  - ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  #- git checkout -f $TRAVIS_BRANC
   #- git config --local user.name $GITHUB_USERNAME
   #- git config --local user.email $GITHUB_EMAIL
   #- ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xm
@@ -44,7 +52,7 @@ before_deploy:
 deploy:
 
   provider: script
-  script: ./mvnw release:prepare --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+  script: ./mvnw -version
   #./mvnw release:prepare release:perform --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
   #provider: releases
   #api_key: $GITHUB_OAUTH_TOKEN
