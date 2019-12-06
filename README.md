@@ -6,8 +6,8 @@
 # Library for testing private methods
 
 That is not a secret that inspite of recomemdations to avoid it depelopers write Unit Tests for private methods.
-It is vitaly important when you refactor legacy code, e.g. with ~1K lines of code classes to cover it with tests.
-Basically there is 3 approaches:  
+It is vitaly important when you refactor legacy code, e.g. with ~1K lines of code classes and cover it with tests.
+Basically there are 3 approaches:  
 1. Change access of tested method to package-private.
 2. Use reflection or some utility classes e.g. Whitebox from Powermock
 3. Use code generation on the fly - e.g. Mockito, Powermock
