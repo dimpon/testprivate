@@ -27,8 +27,8 @@ before_deploy:
   - chmod +x mvnw
 
   #- ./mvnw -B release:clean release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
-  #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
-  #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
   #- git config --local user.name $GITHUB_USERNAME
   #- git config --local user.email $GITHUB_EMAIL
   #- ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xm
