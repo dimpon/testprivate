@@ -44,7 +44,7 @@ before_deploy:
 deploy:
 
   provider: script
-  script: ./mvnw release:help
+  script: ./mvnw release:prepare --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
   #./mvnw release:prepare release:perform --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
   #provider: releases
   #api_key: $GITHUB_OAUTH_TOKEN
