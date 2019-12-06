@@ -152,7 +152,6 @@
                     </dependency>
                 </dependencies>
             </plugin>
-
         </plugins>
     </build>
     <profiles>
