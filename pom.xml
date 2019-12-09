@@ -7,7 +7,7 @@
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.0.20</version>
+    <version>0.0.20-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
@@ -37,7 +37,7 @@
         <connection>scm:git:https://github.com/dimpon/testprivate.git</connection>
         <developerConnection>scm:git:https://github.com/dimpon/testprivate.git</developerConnection>
         <url>https://github.com/dimpon/testprivate</url>
-        <tag>v0.0.20</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
@@ -89,6 +89,7 @@
                     <goals>install</goals>
                     <checkModificationExcludes>
                         <checkModificationExclude>mvnw</checkModificationExclude>
+                        <checkModificationExclude>scripts/deploy.sh</checkModificationExclude>
                     </checkModificationExcludes>
                 </configuration>
             </plugin>
@@ -135,23 +136,7 @@
                    </executions>
                </plugin>
    -->
-            <!-- <plugin>
-                 <artifactId>maven-surefire-plugin</artifactId>
-                 <version>2.19.1</version>
-                 <configuration>
-                     <parallel>methods</parallel>
-                     <useUnlimitedThreads>true</useUnlimitedThreads>
-                     <perCoreThreadCount>true</perCoreThreadCount>
-                 </configuration>
 
-                 <dependencies>
-                     <dependency>
-                         <groupId>org.junit.platform</groupId>
-                         <artifactId>junit-platform-surefire-provider</artifactId>
-                         <version>1.0.1</version>
-                     </dependency>
-                 </dependencies>
-             </plugin>-->
         </plugins>
 
 
