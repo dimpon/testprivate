@@ -90,7 +90,6 @@
                     <goals>install</goals>
                     <checkModificationExcludes>
                         <checkModificationExclude>mvnw</checkModificationExclude>
-                        <checkModificationExclude>scripts/deploy.sh</checkModificationExclude>
                     </checkModificationExcludes>
                 </configuration>
             </plugin>
