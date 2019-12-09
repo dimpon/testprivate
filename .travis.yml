@@ -52,9 +52,9 @@ before_deploy:
 
 deploy:
 
-  provider: script
+  - provider: script
   #script: scripts/deploy.sh
-  script: ./mvnw release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
+    script: ./mvnw release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
   #./mvnw release:prepare release:perform --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
   #provider: releases
   #api_key: $GITHUB_OAUTH_TOKEN
@@ -64,12 +64,36 @@ deploy:
   #  - target/testprivate-$project_version-javadoc.jar
   #  - target/testprivate-$project_version-sources.jar
 
-  skip_cleanup: true
-  on:
-    repo: dimpon/testprivate
-    tags: false
-    condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
-  name: $project_version
+    skip_cleanup: true
+    on:
+      repo: dimpon/testprivate
+      tags: false
+      condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
+    name: "release"
+
+
+  - provider: releases
+    api_key: $GITHUB_OAUTH_TOKEN
+    overwrite: true
+    file:
+      - target/testprivate-$project_version.jar
+      - target/testprivate-$project_version-javadoc.jar
+      - target/testprivate-$project_version-sources.jar
+    skip_cleanup: true
+      on:
+        repo: dimpon/testprivate
+        tags: true
+      name: $project_version-github
+
+  - provider: script
+    script: ./mvnw deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+
+    skip_cleanup: true
+      on:
+        repo: dimpon/testprivate
+        tags: true
+      name: $project_version-sonatype
+
 
 #deploy:
 #  provider: script
