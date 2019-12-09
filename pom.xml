@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <!--current version is 0.0.20-SNAPSHOT -->
     <groupId>io.github.dimpon</groupId>
@@ -92,7 +93,7 @@
                 </configuration>
             </plugin>
 
-           <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>${maven.source.plugin.version}</version>
@@ -120,41 +121,68 @@
                 </executions>
             </plugin>
 
-         <!--   <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>released-version</id>
-                        <goals>
-                            <goal>released-version</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
--->
-           <!-- <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <parallel>methods</parallel>
-                    <useUnlimitedThreads>true</useUnlimitedThreads>
-                    <perCoreThreadCount>true</perCoreThreadCount>
-                </configuration>
+            <!--   <plugin>
+                   <groupId>org.codehaus.mojo</groupId>
+                   <artifactId>build-helper-maven-plugin</artifactId>
+                   <version>3.0.0</version>
+                   <executions>
+                       <execution>
+                           <id>released-version</id>
+                           <goals>
+                               <goal>released-version</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+               </plugin>
+   -->
+            <!-- <plugin>
+                 <artifactId>maven-surefire-plugin</artifactId>
+                 <version>2.19.1</version>
+                 <configuration>
+                     <parallel>methods</parallel>
+                     <useUnlimitedThreads>true</useUnlimitedThreads>
+                     <perCoreThreadCount>true</perCoreThreadCount>
+                 </configuration>
 
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.platform</groupId>
-                        <artifactId>junit-platform-surefire-provider</artifactId>
-                        <version>1.0.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>-->
+                 <dependencies>
+                     <dependency>
+                         <groupId>org.junit.platform</groupId>
+                         <artifactId>junit-platform-surefire-provider</artifactId>
+                         <version>1.0.1</version>
+                     </dependency>
+                 </dependencies>
+             </plugin>-->
         </plugins>
+
 
     </build>
     <profiles>
+
+        <profile>
+            <id>tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <configuration>
+                            <parallel>methods</parallel>
+                            <useUnlimitedThreads>true</useUnlimitedThreads>
+                            <perCoreThreadCount>true</perCoreThreadCount>
+                        </configuration>
+
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.junit.platform</groupId>
+                                <artifactId>junit-platform-surefire-provider</artifactId>
+                                <version>1.0.1</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
         <profile>
             <id>release</id>
             <build>
