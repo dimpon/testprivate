@@ -17,7 +17,7 @@ install: ./mvnw --settings .travis/settings.xml package -DskipTests=true -Dgpg.s
 
 #script: ./mvnw clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
 
-script: ./mvnw -version
+script: echo "script is skipped"
 
 cache:
   directories:
@@ -33,6 +33,7 @@ before_deploy:
   #- git stash
   #- git checkout -f $TRAVIS_BRANCH
   - chmod +x mvnw
+  - chmod +x scripts/deploy.sh
   #- ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
@@ -52,7 +53,7 @@ before_deploy:
 deploy:
 
   provider: script
-  script: bash script/delpoy.sh
+  script: scripts/deploy.sh
   #./mvnw release:prepare release:perform --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
   #provider: releases
   #api_key: $GITHUB_OAUTH_TOKEN
