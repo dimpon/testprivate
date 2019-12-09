@@ -30,8 +30,8 @@ before_deploy:
   #- ./mvnw -B release:clean release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
   #- ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   #- export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
-  #- git stash
-  #- git checkout -f $TRAVIS_BRANCH
+  - git stash
+  - git checkout -f $TRAVIS_BRANCH
   - chmod +x mvnw
   - chmod +x scripts/deploy.sh
   #- ./mvnw -B release:prepare -DskipTests=true -DupdateWorkingCopyVersions=false --settings .travis/settings.xml
@@ -59,7 +59,6 @@ deploy:
   #provider: releases
   #api_key: $GITHUB_OAUTH_TOKEN
   #overwrite: true
-
   #file:
   #  - target/testprivate-$project_version.jar
   #  - target/testprivate-$project_version-javadoc.jar
