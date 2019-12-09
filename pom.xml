@@ -154,25 +154,11 @@
         </plugins>
 
     </build>
-   <!-- <profiles>
+    <profiles>
         <profile>
             <id>release</id>
             <build>
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>${maven.release.plugin.version}</version>
-                        <configuration>
-                            <tagNameFormat>v@{project.version}</tagNameFormat>
-                            <autoVersionSubmodules>true</autoVersionSubmodules>
-                            <releaseProfiles>releases</releaseProfiles>
-                            <goals>install</goals>
-                            <checkModificationExcludes>
-                                <checkModificationExclude>mvnw</checkModificationExclude>
-                            </checkModificationExcludes>
-                        </configuration>
-                    </plugin>
 
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
@@ -185,7 +171,7 @@
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
-                    &lt;!&ndash; To generate javadoc &ndash;&gt;
+
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -232,5 +218,5 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>-->
+    </profiles>
 </project>

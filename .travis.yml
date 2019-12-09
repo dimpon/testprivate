@@ -17,7 +17,7 @@ install: ./mvnw --settings .travis/settings.xml package -DskipTests=true -Dgpg.s
 
 #script: ./mvnw clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
 
-script: ./mvnw -version
+script: echo "script is skipped"
 
 cache:
   directories:
