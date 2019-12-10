@@ -162,31 +162,6 @@
     <profiles>
 
         <profile>
-            <id>tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>2.19.1</version>
-                        <configuration>
-                            <parallel>methods</parallel>
-                            <useUnlimitedThreads>true</useUnlimitedThreads>
-                            <perCoreThreadCount>true</perCoreThreadCount>
-                        </configuration>
-
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.junit.platform</groupId>
-                                <artifactId>junit-platform-surefire-provider</artifactId>
-                                <version>1.0.1</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-        <profile>
             <id>release</id>
             <build>
                 <plugins>
@@ -216,7 +191,6 @@
                             </execution>
                         </executions>
                     </plugin>
-
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>

@@ -11,7 +11,7 @@ before_install:
 install: echo "install..."
 
 #2nd if you comment the script is runs default mvn test -B
-script: mvn clean package -B
+script: mvn clean test -B
 
 #cache:
 #  directories:
@@ -25,7 +25,7 @@ before_deploy:
 
 deploy:
   - provider: script
-    script: echo "deploy 1" && git checkout -f $TRAVIS_BRANCH && mvn release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
+    script: echo "launch release..." && git checkout -f $TRAVIS_BRANCH && mvn release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
     skip_cleanup: false
     on:
       repo: dimpon/testprivate
@@ -33,13 +33,13 @@ deploy:
       condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
       name: "launch release"
 
-#  - provider: script
-#    script: mvn package -B -U
-#    skip_cleanup: false
-#    on:
-#      repo: dimpon/testprivate
-#      tags: true
-#      name: $project_version
+  - provider: script
+    script: mvn clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+    skip_cleanup: true
+    on:
+      repo: dimpon/testprivate
+      tags: true
+      name: "deploy to sonatype"
 
   - provider: releases
     api_key: $GITHUB_OAUTH_TOKEN
