@@ -76,7 +76,7 @@ deploy:
       on:
         repo: dimpon/testprivate
         tags: true
-      name: $project_version-github
+      name: $project_version
 
   - provider: script
     script: ./mvnw deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease

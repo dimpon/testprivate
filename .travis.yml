@@ -9,5 +9,26 @@ before_install:
 #1st
 install: echo "install..."
 
-#2nd
-#script: echo "script..."
+#2nd if you comment the script is runs default mvn test -B
+script: echo "script..."
+
+
+before_deploy:
+  - echo "before_deploy 1"
+  - echo "before_deploy 1"
+
+deploy:
+  - provider: script
+    script: echo "deploy 1" && git stash && git checkout -f $TRAVIS_BRANCH && chmod +x mvnw && ./mvnw release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
+    on:
+      repo: dimpon/testprivate
+      tags: false
+      condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
+      name: "deploy 1"
+
+  - provider: script
+    script: echo "deploy 1"
+    on:
+      repo: dimpon/testprivate
+      tags: true
+      name: "deploy 2"
