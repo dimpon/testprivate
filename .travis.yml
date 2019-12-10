@@ -13,9 +13,9 @@ install: echo "install..."
 #2nd if you comment the script is runs default mvn test -B
 script: mvn test -B
 
-cache:
-  directories:
-    - $HOME/.m2
+#cache:
+#  directories:
+#    - $HOME/.m2
 
 before_deploy:
   - echo "before_deploy..."
