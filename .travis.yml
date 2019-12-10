@@ -11,11 +11,11 @@ before_install:
 install: echo "install..."
 
 #2nd if you comment the script is runs default mvn test -B
-script: mvn test -B
+script: mvn clean package -B
 
-cache:
-  directories:
-    - $HOME/.m2
+#cache:
+#  directories:
+#    - $HOME/.m2
 
 before_deploy:
   - echo "before_deploy..."
@@ -33,13 +33,13 @@ deploy:
       condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
       name: "launch release"
 
-  - provider: script
-    script: mvn package -B -U
-    skip_cleanup: false
-    on:
-      repo: dimpon/testprivate
-      tags: true
-      name: $project_version
+#  - provider: script
+#    script: mvn package -B -U
+#    skip_cleanup: false
+#    on:
+#      repo: dimpon/testprivate
+#      tags: true
+#      name: $project_version
 
   - provider: releases
     api_key: $GITHUB_OAUTH_TOKEN
