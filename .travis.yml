@@ -4,31 +4,42 @@ jdk:
   - openjdk8
 
 before_install:
-  - chmod +x mvnw
+  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch
+  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 
 #1st
 install: echo "install..."
 
 #2nd if you comment the script is runs default mvn test -B
-script: echo "script..."
+script: mvn test -B
 
 
 before_deploy:
-  - echo "before_deploy 1"
-  - echo "before_deploy 1"
+  - echo "before_deploy..."
+  - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
+  - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
+
 
 deploy:
   - provider: script
-    script: echo "deploy 1" && git stash && git checkout -f $TRAVIS_BRANCH && chmod +x mvnw && ./mvnw release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
+    script: echo "deploy 1" && git checkout -f $TRAVIS_BRANCH && mvn release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
+    skip_cleanup: true
     on:
       repo: dimpon/testprivate
       tags: false
       condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
       name: "deploy 1"
 
-  - provider: script
-    script: echo "deploy 2"
+  - provider: releases
+    api_key: $GITHUB_OAUTH_TOKEN
+    overwrite: true
+    file:
+      - target/testprivate-$project_version.jar
+      - target/testprivate-$project_version-javadoc.jar
+      - target/testprivate-$project_version-sources.jar
+
+    skip_cleanup: true
     on:
       repo: dimpon/testprivate
       tags: true
-      name: "deploy 2"
+      name: $project_version
