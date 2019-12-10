@@ -27,7 +27,7 @@ deploy:
       name: "deploy 1"
 
   - provider: script
-    script: echo "deploy 1"
+    script: echo "deploy 2"
     on:
       repo: dimpon/testprivate
       tags: true
