@@ -11,7 +11,7 @@ before_install:
 install: echo "install..."
 
 #2nd if you comment the script is runs default mvn test -B
-script: mvn clean test -B
+script: mvn clean test jacoco:report -e -B
 
 #cache:
 #  directories:

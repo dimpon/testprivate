@@ -6,7 +6,7 @@
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.0.27-SNAPSHOT</version>
+    <version>0.0.28-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
@@ -76,7 +76,6 @@
         </dependency>
     </dependencies>
 
-
     <build>
         <plugins>
             <plugin>
@@ -138,6 +137,20 @@
                         <version>1.0.1</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!--   <plugin>
