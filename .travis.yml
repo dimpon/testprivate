@@ -3,32 +3,37 @@ language: java
 jdk:
   - openjdk8
 
+#integration with codecov, call webhook
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
+#import gpg keys and ownertrust for gpg signature
 before_install:
   - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch
   - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 
-#1st
+#skipping install
 install: echo "install..."
 
-#2nd if you comment the script is runs default mvn test -B
+#that's what is run for every commit
 script: mvn clean test jacoco:report -e -B
 
+#class not found issue when cache is enabled
 #cache:
 #  directories:
 #    - $HOME/.m2
 
+#save current version from pom
 before_deploy:
   - echo "before_deploy..."
   - mvn help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 
-
 deploy:
+
+#change version to release, set a tag, increment version to the next snapshot TODO do not build project, just change and commit pom.xml
   - provider: script
-    script: echo "launch release..." && git checkout -f $TRAVIS_BRANCH && mvn release:prepare --settings .travis/settings.xml -DskipTests=true -B -U
+    script: echo "launch release..." && git checkout -f $TRAVIS_BRANCH && mvn release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true  -DskipTests -B -U
     skip_cleanup: false
     on:
       repo: dimpon/testprivate
@@ -36,14 +41,16 @@ deploy:
       condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
       name: "launch release"
 
+# deploy to sonatype
   - provider: script
-    script: mvn clean deploy --settings .travis/settings.xml -DskipTests=true -B -U -Prelease
+    script: mvn clean deploy --settings .travis/settings.xml -Dmaven.test.skip=true  -DskipTests -B -U -Prelease
     skip_cleanup: true
     on:
       repo: dimpon/testprivate
       tags: true
       name: "deploy to sonatype"
 
+# deploy to github releases
   - provider: releases
     api_key: $GITHUB_OAUTH_TOKEN
     overwrite: true

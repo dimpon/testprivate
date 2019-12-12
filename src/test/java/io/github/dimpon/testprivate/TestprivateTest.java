@@ -3,7 +3,7 @@ package io.github.dimpon.testprivate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static io.github.dimpon.testprivate.Instance.instance;
+import static io.github.dimpon.testprivate.WithInstance.Instance;
 
 public class TestprivateTest {
 
@@ -15,7 +15,7 @@ public class TestprivateTest {
     @Test
     void callPrivateMethods() {
         ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
-        DuplicateString duplicateString = instance(o).castTo(DuplicateString.class);
+        DuplicateString duplicateString = Instance(o).castTo(DuplicateString.class);
         String one = duplicateString.duplicateString("one");
         Assertions.assertEquals("oneone",one);
     }
