@@ -32,7 +32,8 @@ deploy:
 #change version to release, set a tag, increment version to the next snapshot TODO do not build project, just change and commit pom.xml
   - provider: script
     script: "git checkout -f $TRAVIS_BRANCH &&
-    export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')"
+    ./mvnw versions:set -DremoveSnapshot versions:commit &&
+    ./mvnw versions:set-scm-tag -DnewTag=${project_version} versions:commit"
 
 # ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U"
     skip_cleanup: false
