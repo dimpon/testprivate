@@ -33,10 +33,11 @@ deploy:
 
 #change version to release, set a tag, increment version to the next snapshot TODO do not build project, just change and commit pom.xml
   - provider: script
-    script: >
+    script: >-
       echo "launch release..." &&
       git checkout -f $TRAVIS_BRANCH &&
       ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
+
     skip_cleanup: false
     on:
       repo: dimpon/testprivate
