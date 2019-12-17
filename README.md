@@ -36,5 +36,6 @@ versions:set-scm-tag
 
  mvn -DnewVersion=0.0.29 -DnewTag=v0.0.29 versions:set versions:set-scm-tag
  
- mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DnewTag=v\${parsedVersion.majorVersion}.\${parsedVersion.minorVersio
- n}.\${parsedVersion.nextIncrementalVersion} versions:set-scm-tag versions:commit
+ mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DnewTag=v\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} versions:set-scm-tag versions:commit
+
+mvn versions:set -DremoveSnapshot build-helper:parse-version versions:set-scm-tag -DnewTag=${parsedVersion} versions:commit
