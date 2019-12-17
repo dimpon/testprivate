@@ -1,3 +1,4 @@
+os: linux
 language: java
 jdk:
   - openjdk8
@@ -18,9 +19,9 @@ install: echo "install..."
 script: ./mvnw clean test jacoco:report -e -B
 
 #class not found issue when cache is enabled
-#cache:
-#  directories:
-#    - $HOME/.m2
+cache:
+  directories:
+    - $HOME/.m2
 
 #save current version from pom
 before_deploy:
@@ -31,8 +32,13 @@ deploy:
 
 #change version to release, set a tag, increment version to the next snapshot TODO do not build project, just change and commit pom.xml
   - provider: script
-    script: "git checkout -f $TRAVIS_BRANCH &&
-    ./mvnw build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DnewTag=v\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} versions:set-scm-tag versions:commit"
+    script: >-
+      echo "deploy" &&
+      git checkout -f $TRAVIS_BRANCH &&
+      export release_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['|sed -e 's/[-SNAPSHOT].*//;/^$/d') &&
+      echo "release_version" &&
+      echo ${release_version}
+
 
 # ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U"
     cleanup: false
