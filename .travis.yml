@@ -27,6 +27,7 @@ cache:
 before_deploy:
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - export rek_version=$(echo $project_version|sed 's/-SNAPSHOT.*//')
 
 deploy:
 
@@ -35,9 +36,12 @@ deploy:
     script: >-
       echo "deploy" &&
       git checkout -f $TRAVIS_BRANCH &&
-      export release_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['|sed -e 's/[-SNAPSHOT].*//;/^$/d') &&
+      release_version=$($project_version|sed 's/-SNAPSHOT.*//') &&
       echo "release_version" &&
-      echo ${release_version}
+      echo r-$release_version &&
+      echo p-$project_version &&
+      echo pre-$rek_version &&
+      echo $project_version|sed 's/-SNAPSHOT.*//'
 
 
 # ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U"
