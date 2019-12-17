@@ -26,14 +26,17 @@ script: ./mvnw clean test jacoco:report -e -B
 #save current version from pom
 before_deploy:
   - echo "before_deploy..."
-  - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
+# - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
 
 deploy:
 
 #change version to release, set a tag, increment version to the next snapshot TODO do not build project, just change and commit pom.xml
   - provider: script
-    script: echo "launch release..." && git checkout -f $TRAVIS_BRANCH && ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
+    script: >
+      echo "launch release..." &&
+      git checkout -f $TRAVIS_BRANCH &&
+      ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
     skip_cleanup: false
     on:
       repo: dimpon/testprivate
@@ -42,25 +45,25 @@ deploy:
       name: "launch release"
 
 # deploy to sonatype
-  - provider: script
-    script: ./mvnw clean deploy --settings .travis/settings.xml -Dmaven.test.skip=true  -DskipTests -B -U -Prelease
-    skip_cleanup: true
-    on:
-      repo: dimpon/testprivate
-      tags: true
-      name: "deploy to sonatype"
+#  - provider: script
+#    script: ./mvnw clean deploy --settings .travis/settings.xml -Dmaven.test.skip=true  -DskipTests -B -U -Prelease
+#    skip_cleanup: true
+#    on:
+#      repo: dimpon/testprivate
+#      tags: true
+#      name: "deploy to sonatype"
 
 # deploy to github releases
-  - provider: releases
-    api_key: $GITHUB_OAUTH_TOKEN
-    overwrite: true
-    file:
-      - target/testprivate-$project_version.jar
-      - target/testprivate-$project_version-javadoc.jar
-      - target/testprivate-$project_version-sources.jar
+#  - provider: releases
+#    api_key: $GITHUB_OAUTH_TOKEN
+#    overwrite: true
+#    file:
+#      - target/testprivate-$project_version.jar
+#      - target/testprivate-$project_version-javadoc.jar
+#      - target/testprivate-$project_version-sources.jar
 
-    skip_cleanup: true
-    on:
-      repo: dimpon/testprivate
-      tags: true
-      name: $project_version
+#    skip_cleanup: true
+#    on:
+#      repo: dimpon/testprivate
+#      tags: true
+#      name: $project_version
