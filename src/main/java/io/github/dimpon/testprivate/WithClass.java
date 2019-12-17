@@ -7,4 +7,8 @@ public class WithClass {
 	private WithClass(Class<?> clazz) {
 		this.clazz = clazz;
 	}
+
+	public static WithClass Class(Class<?> clazz) {
+		return new WithClass(clazz);
+	}
 }

@@ -29,3 +29,9 @@ The Unit Test for the private method:
         Assertions.assertEquals("oneone",one);
     }
 ```
+
+mvn -DnewVersion=<something> versions:set
+
+versions:set-scm-tag
+
+ mvn -DnewVersion=0.0.29 -DnewTag=0.0.29 versions:set versions:set-scm-tag

@@ -18,5 +18,6 @@ public class TestprivateTest {
         DuplicateString duplicateString = Instance(o).castTo(DuplicateString.class);
         String one = duplicateString.duplicateString("one");
         Assertions.assertEquals("oneone",one);
+
     }
 }
