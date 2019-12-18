@@ -19,14 +19,15 @@ install: echo "install..."
 script: ./mvnw clean test jacoco:report -e -B
 
 #class not found issue when cache is enabled
-#cache:
-#  directories:
-#    - $HOME/.m2
+cache:
+  directories:
+    - $HOME/.m2
 
 #save current version from pom
 before_deploy:
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - export release_version=$(echo $project_version|sed 's/-SNAPSHOT.*//')
 
 deploy:
 
@@ -34,10 +35,13 @@ deploy:
   - provider: script
     script: >-
       echo "deploy" &&
+      git config --local user.name $GITHUB_USERNAME &&
+      git config --local user.email $GITHUB_EMAIL &&
       git checkout -f $TRAVIS_BRANCH &&
-      ./mvnw versions:set -DremoveSnapshot=true &&
-      export release_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\[') &&
-      echo $release_version
+      ./mvnw versions:set -DnewVersion=$release_version  versions:set-scm-tag -DnewTag=v$release_version versions:commit &&
+      git tag -a v$release_version -m $release_version &&
+      git push origin --tags
+
 
 # ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U"
     cleanup: false
