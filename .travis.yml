@@ -57,16 +57,16 @@ deploy:
 #      name: "deploy to sonatype"
 
 # deploy to github releases
-#  - provider: releaсses
-#    api_key: $GITHUB_OAUTH_TOKEN
-#    overwrite: true
-#    file:
-#      - target/testprivate-$project_version.jar
-#      - target/testprivate-$project_version-javadoc.jar
-#      - target/testprivate-$project_version-sources.jar
+  - provider: releaсses
+    api_key: $GITHUB_OAUTH_TOKEN
+    overwrite: true
+    file:
+      - target/testprivate-$project_version.jar
+      - target/testprivate-$project_version-javadoc.jar
+      - target/testprivate-$project_version-sources.jar
 
-#    skip_cleanup: true
-#    on:
-#      repo: dimpon/testprivate
-#      tags: true
-#      name: $project_version
+    skip_cleanup: true
+    on:
+      repo: dimpon/testprivate
+      tags: true
+      name: $project_version
