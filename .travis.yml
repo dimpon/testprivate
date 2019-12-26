@@ -35,12 +35,8 @@ deploy:
   - provider: script
     script: >-
       echo "deploy" &&
-      git config --local user.name $GITHUB_USERNAME &&
-      git config --local user.email $GITHUB_EMAIL &&
       git checkout -f $TRAVIS_BRANCH &&
-      ./mvnw versions:set -DnewVersion=$release_version  versions:set-scm-tag -DnewTag=v$release_version versions:commit &&
-      git tag -a v$release_version -m $release_version &&
-      git push origin --tags
+      ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
 
 
 # ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U"
@@ -61,7 +57,7 @@ deploy:
 #      name: "deploy to sonatype"
 
 # deploy to github releases
-#  - provider: releases
+#  - provider: releaсses
 #    api_key: $GITHUB_OAUTH_TOKEN
 #    overwrite: true
 #    file:
