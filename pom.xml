@@ -6,7 +6,7 @@
     <artifactId>testprivate</artifactId>
     <packaging>jar</packaging>
 
-    <version>0.0.32-SNAPSHOT</version>
+    <version>0.0.31-SNAPSHOT</version>
     <name>testprivate</name>
     <description>Library for testing private methods and fields</description>
     <url>https://github.com/dimpon/testprivate</url>
@@ -85,6 +85,7 @@
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <suppressCommitBeforeTag>true</suppressCommitBeforeTag>
                     <!--<releaseProfiles>releases</releaseProfiles>-->
                     <!--<goals>install</goals>
                     <checkModificationExcludes>
