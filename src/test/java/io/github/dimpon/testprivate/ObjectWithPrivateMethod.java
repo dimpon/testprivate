@@ -6,4 +6,8 @@ public class ObjectWithPrivateMethod {
         return in+in;
     }
 
+    private static String triplicateString(String in){
+        return in+in+in;
+    }
+
 }

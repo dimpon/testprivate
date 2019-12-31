@@ -8,9 +8,9 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 #import gpg keys and ownertrust for gpg signature
-before_install:
-  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch
-  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+#before_install:
+#  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch
+#  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 
 #skipping install
 install: echo "install..."
@@ -28,6 +28,9 @@ before_deploy:
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\[')
   - export release_version=$(echo $project_version|sed 's/-SNAPSHOT.*//')
+  #import gpg keys and ownertrust for gpg signature
+  - echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch
+  - echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
 
 deploy:
 
@@ -38,23 +41,23 @@ deploy:
       git checkout -f $TRAVIS_BRANCH &&
       ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
 
-
-# ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U"
     cleanup: false
     on:
       repo: dimpon/testprivate
+      branch: master
       tags: false
       condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
       name: "launch release"
 
 # deploy to sonatype
-#  - provider: script
-#    script: ./mvnw clean deploy --settings .travis/settings.xml -Dmaven.test.skip=true  -DskipTests -B -U -Prelease
-#    skip_cleanup: true
-#    on:
-#      repo: dimpon/testprivate
-#      tags: true
-#      name: "deploy to sonatype"
+  - provider: script
+    script: ./mvnw clean deploy --settings .travis/settings.xml -Dmaven.test.skip=true  -DskipTests -B -U -Prelease
+    skip_cleanup: true
+    on:
+      repo: dimpon/testprivate
+      branch: master
+      tags: true
+      name: "deploy to sonatype"
 
 # deploy to github releases
   - provider: releaсses
@@ -64,9 +67,9 @@ deploy:
       - target/testprivate-$project_version.jar
       - target/testprivate-$project_version-javadoc.jar
       - target/testprivate-$project_version-sources.jar
-
     skip_cleanup: true
     on:
       repo: dimpon/testprivate
+      branch: master
       tags: true
       name: $project_version

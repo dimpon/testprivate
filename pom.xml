@@ -59,6 +59,8 @@
         <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
         <maven.release.plugin.version>2.5.3</maven.release.plugin.version>
         <maven.source.plugin.version>3.2.0</maven.source.plugin.version>
+        <spotbugs.version>4.0.0-beta4</spotbugs.version>
+        <spotbugs.maven.plugin.version>3.1.12.2</spotbugs.maven.plugin.version>
     </properties>
 
     <dependencies>
@@ -85,7 +87,7 @@
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <suppressCommitBeforeTag>true</suppressCommitBeforeTag>
+
                     <!--<releaseProfiles>releases</releaseProfiles>-->
                     <!--<goals>install</goals>
                     <checkModificationExcludes>
@@ -122,6 +124,18 @@
                 </executions>
             </plugin>
 -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.maven.plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.github.spotbugs</groupId>
+                        <artifactId>spotbugs</artifactId>
+                        <version>${spotbugs.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>

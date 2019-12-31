@@ -25,59 +25,28 @@ package io.github.dimpon.testprivate;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 
 /**
  * Class allows to call methods of object using arbitrary interface containing the same methods.
  * Uses Dynamic Proxy for searching the right methods.
  */
-public final class WithInstance {
+public final class CastObject implements CastToInterface {
 
-    private Object obj;
+    private Object o;
 
-    private WithInstance(Object obj) {
-        this.obj = obj;
+    CastObject(Object o) {
+        this.o = o;
     }
 
-    /**
-     * Factory method creates the Instance of Instance
-     * @param obj object is needed to be tested
-     * @return Instance object
-     */
-    public static WithInstance Instance(Object obj) {
-        return new WithInstance(obj);
-    }
-
-    /**
-     * Generates dynamic proxy for interfaceClass interface
-     *
-     * @param interfaceClass interface for proxing original object
-     * @param <T> interface class
-     * @return Instance of  interfaceClass
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T castTo(Class<T> interfaceClass) {
-
-        return (T) Proxy.newProxyInstance(
-                WithInstance.class.getClassLoader(),
-                new Class<?>[]{interfaceClass},
-                new WithInstance.MethodsHandler(obj));
-
+    @Override
+    public InvocationHandler createInvocationHandler() {
+        return new CastObject.MethodsHandler();
     }
 
     class MethodsHandler<T> implements InvocationHandler {
-
-        private T obj;
-
-        private MethodsHandler(T obj) {
-            this.obj = obj;
-        }
-
         @Override
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            Method declaredMethod = obj.getClass().getDeclaredMethod(method.getName(), method.getParameterTypes());
-            declaredMethod.setAccessible(true);
-            return declaredMethod.invoke(obj, args);
+        public Object invoke(Object __, Method method, Object[] args) throws Throwable {
+            return PerformAction.perform(o, o.getClass(), method, args);
         }
     }
 }
