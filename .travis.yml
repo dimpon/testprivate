@@ -19,9 +19,9 @@ install: echo "install..."
 script: ./mvnw clean test jacoco:report -e -B
 
 #class not found issue when cache is enabled
-cache:
-  directories:
-    - $HOME/.m2
+#cache:
+#  directories:
+#    - $HOME/.m2
 
 #save current version from pom
 before_deploy:
@@ -67,7 +67,7 @@ deploy:
       - target/testprivate-$project_version.jar
       - target/testprivate-$project_version-javadoc.jar
       - target/testprivate-$project_version-sources.jar
-    skip_cleanup: true
+    cleanup: true
     on:
       repo: dimpon/testprivate
       branch: master
