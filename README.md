@@ -23,10 +23,10 @@ The Unit Test for the private method:
 
     @Test
     void callPrivateMethod() {
-        ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
-        DuplicateString duplicateString = instance(o).castTo(DuplicateString.class);
-        String one = duplicateString.duplicateString("one");
-        Assertions.assertEquals("oneone",one);
+         ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
+         DuplicateString duplicateString = cast(o).toInterface(DuplicateString.class);
+         String one = duplicateString.duplicateString("one");
+         Assertions.assertEquals("oneone", one);
     }
 ```
 
