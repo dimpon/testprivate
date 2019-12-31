@@ -41,7 +41,7 @@ deploy:
       git checkout -f $TRAVIS_BRANCH &&
       ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
 
-    cleanup: false
+    cleanup: true
     on:
       repo: dimpon/testprivate
       branch: master
@@ -52,7 +52,7 @@ deploy:
 # deploy to sonatype
   - provider: script
     script: ./mvnw clean deploy --settings .travis/settings.xml -Dmaven.test.skip=true  -DskipTests -B -U -Prelease
-    skip_cleanup: true
+    cleanup: true
     on:
       repo: dimpon/testprivate
       branch: master
