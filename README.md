@@ -30,20 +30,3 @@ The Unit Test for the private method:
     }
 ```
 
-mvn -DnewVersion=<something> versions:set
-
-versions:set-scm-tag
-
- mvn -DnewVersion=0.0.29 -DnewTag=v0.0.29 versions:set versions:set-scm-tag
- 
- mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} -DnewTag=v\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} versions:set-scm-tag versions:commit
-
-mvn versions:set -DremoveSnapshot build-helper:parse-version versions:set-scm-tag -DnewTag=${parsedVersion} versions:commit
-
-
- &&
-    export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[') &&
-    ./mvnw versions:set-scm-tag -DnewTag=${project_version} versions:commit &&
-    git commit -m 'set release version' &&
-    git tag -a v${project_version} -m 'set release version' &&
-    git push --tags origin
