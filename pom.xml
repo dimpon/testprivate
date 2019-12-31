@@ -87,12 +87,6 @@
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-
-                    <!--<releaseProfiles>releases</releaseProfiles>-->
-                    <!--<goals>install</goals>
-                    <checkModificationExcludes>
-                        <checkModificationExclude>mvnw</checkModificationExclude>
-                    </checkModificationExcludes>-->
                 </configuration>
             </plugin>
 
