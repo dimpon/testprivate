@@ -46,4 +46,12 @@ public class TestprivateTest {
         String one = triplicateString.triplicateString("one");
         Assertions.assertEquals("oneoneone", one);
     }
+
+
+    @Test
+    void passNotInterfaceForCast() {
+        Assertions.assertThrows(TestprivateException.class, () -> {
+            cast(ObjectWithPrivateMethod.class).toInterface(Pole.class);
+        });
+    }
 }

@@ -25,9 +25,9 @@ script: ./mvnw clean test jacoco:report -e -B
 
 #save current version from pom
 before_deploy:
+  - echo "before_deploy..."
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\[')
-  - export release_version=$(echo $project_version|sed 's/-SNAPSHOT.*//')
 
 deploy:
 #change version to release, set a tag, increment version to the next snapshot TODO do not build project, just change and commit pom.xml
@@ -35,12 +35,10 @@ deploy:
     script: >-
       echo "deploy" &&
       git checkout -f $TRAVIS_BRANCH &&
-      ./mvnw release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
-
-    cleanup: false
+      ./mvnw clean release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
+    cleanup: true
     on:
       repo: dimpon/testprivate
-      branch: master
       tags: false
       condition: $TRAVIS_COMMIT_MESSAGE =~ ^(release)$
       name: "launch release"
@@ -51,12 +49,11 @@ deploy:
     cleanup: false
     on:
       repo: dimpon/testprivate
-      branch: master
       tags: true
       name: "deploy to sonatype"
 
 # deploy to github releases
-  - provider: releaсses
+  - provider: releases
     api_key: $GITHUB_OAUTH_TOKEN
     overwrite: true
     file:
