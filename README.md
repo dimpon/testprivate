@@ -17,6 +17,12 @@ Here the alternative approach is suggested. See the folloging sample.
 Assume that we have class `ObjectWithPrivateMethod` and it has `private String duplicateString(String in)`.  
 The Unit Test for the private method:
 ```java
+    static public class ObjectWithPrivateMethod {    
+        private String duplicateString(String in) {
+            return in + in;
+        }
+    }
+
     interface DuplicateString {
         String duplicateString(String in);
     }

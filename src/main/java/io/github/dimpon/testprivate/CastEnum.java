@@ -3,7 +3,7 @@ package io.github.dimpon.testprivate;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public final class CastEnum implements CastToInterface {
+public final class CastEnum extends CastToInterface {
 
     private Enum<?> e;
 
@@ -18,7 +18,7 @@ public final class CastEnum implements CastToInterface {
 
     class MethodsHandler implements InvocationHandler {
         @Override
-        public Object invoke(Object __, Method method, Object[] args) throws Throwable {
+        public Object invoke(Object __, Method method, Object[] args) {
             return PerformAction.create(e, e.getClass(), method, args).perform();
         }
     }
