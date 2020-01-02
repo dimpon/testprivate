@@ -1,11 +1,13 @@
 package io.github.dimpon.testprivate;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import io.github.dimpon.testprivate.actions.MethodDetector;
-import io.github.dimpon.testprivate.actions.SetterDetector;
+import io.github.dimpon.testprivate.actions.GetterAction;
+import io.github.dimpon.testprivate.actions.MethodAction;
+import io.github.dimpon.testprivate.actions.SetterAction;
 
 final class PerformAction {
 
@@ -13,67 +15,31 @@ final class PerformAction {
 	private final Class<?> clazz;
 	private final Method method;
 	private final Object[] args;
-	private ActionDetector<Method> methodDetector = new MethodDetector();
-	private ActionDetector<Field> setterDetector = new SetterDetector();
+
+	private final List<Action> detectors = new ArrayList<>();
 
 	private PerformAction(Object obj, Class<?> clazz, Method method, Object[] args) {
 		this.obj = obj;
 		this.clazz = clazz;
 		this.method = method;
 		this.args = args;
+
+		detectors.add(new MethodAction());
+		detectors.add(new SetterAction());
+		detectors.add(new GetterAction());
 	}
 
 	static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
 		return new PerformAction(obj, clazz, method, args);
 	}
 
-	Object perform() throws Throwable {
-
-		Optional<AccessibleObjectAndAction<Method>> methodAndAction = methodDetector
-				.detectActionType(this.obj, this.clazz, this.method, this.args);
-
-		if (methodAndAction.isPresent()) {
-			return invokeMethod(obj, methodAndAction.get().accessibleObject, args);
-		}
-
-		Optional<AccessibleObjectAndAction<Field>> fieldsAndAction = setterDetector
-				.detectActionType(this.obj, this.clazz, this.method, this.args);
-
-		if (fieldsAndAction.isPresent()) {
-			setField(this.obj, fieldsAndAction.get().accessibleObject, args[0]);
-			return null;
+	Object perform() {
+		for (Action a : detectors) {
+			Optional<Object> result = a.performAndReturnResult(this.obj,this.clazz,this.method,this.args);
+			if (result.isPresent())
+				return result.get();
 		}
 
 		throw new TestprivateException("Method is not found in original class/object");
-
 	}
-
-	/*private static Optional<Field> getFieldForGet(Class<?> clazz, Method method) throws Throwable {
-
-		if (method.getName().startsWith("is") &&
-				(method.getReturnType().equals(Boolean.class) || method.getReturnType().equals(boolean.class))) {
-
-			return Optional.of(clazz.getDeclaredField(fieldName("is", method.getName())));
-
-		}
-
-		return Optional.empty();
-	}
-
-	private static String fieldName(String prefix, String longName) {
-		char[] chars = longName.substring(prefix.length()).toCharArray();
-		chars[0] = Character.toLowerCase(chars[0]);
-		return new String(chars);
-	}*/
-
-	private Object invokeMethod(Object obj, Method method, Object[] args) throws Throwable {
-		method.setAccessible(true);
-		return method.invoke(obj, args);
-	}
-
-	private void setField(Object obj, Field field, Object newValue) throws Throwable {
-		field.setAccessible(true);
-		field.set(obj, newValue);
-	}
-
 }

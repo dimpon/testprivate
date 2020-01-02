@@ -3,7 +3,7 @@ package io.github.dimpon.testprivate;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public final class CastEnum implements CastToInterface {
+public final class CastEnum extends CastToInterface {
 
     private Enum<?> e;
 

@@ -3,7 +3,7 @@ package io.github.dimpon.testprivate;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-public final class CastClass implements CastToInterface {
+public final class CastClass extends CastToInterface {
 
     private Class<?> c;
 
