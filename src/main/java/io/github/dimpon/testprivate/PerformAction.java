@@ -20,7 +20,7 @@ final class PerformAction {
 		this.obj = obj;
 		this.clazz = clazz;
 		this.method = method;
-		this.args = args.clone();
+		this.args = args;
 	}
 
 	static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
