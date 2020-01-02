@@ -12,6 +12,10 @@ public class TestprivateTest {
         Nord, South
     }
 
+    interface SetString {
+        void setValue(String newValue);
+    }
+
     interface DuplicateString {
         String duplicateString(String in);
     }
@@ -30,6 +34,14 @@ public class TestprivateTest {
         DuplicateString duplicateString = cast(o).toInterface(DuplicateString.class);
         String one = duplicateString.duplicateString("one");
         Assertions.assertEquals("oneone", one);
+    }
+
+    @Test
+    void setPrivateField() {
+        ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
+        SetString duplicateString = cast(o).toInterface(SetString.class);
+        duplicateString.setValue("newValue");
+        Assertions.assertEquals("newValue", o.readValue());
     }
 
     @Test

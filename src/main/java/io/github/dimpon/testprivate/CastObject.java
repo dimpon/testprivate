@@ -43,10 +43,10 @@ public final class CastObject implements CastToInterface {
         return new CastObject.MethodsHandler();
     }
 
-    class MethodsHandler<T> implements InvocationHandler {
+    class MethodsHandler implements InvocationHandler {
         @Override
         public Object invoke(Object __, Method method, Object[] args) throws Throwable {
-            return PerformAction.perform(o, o.getClass(), method, args);
+            return PerformAction.create(o, o.getClass(), method, args).perform();
         }
     }
 }

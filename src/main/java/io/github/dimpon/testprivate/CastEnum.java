@@ -16,10 +16,10 @@ public final class CastEnum implements CastToInterface {
         return new CastEnum.MethodsHandler();
     }
 
-    class MethodsHandler<T> implements InvocationHandler {
+    class MethodsHandler implements InvocationHandler {
         @Override
         public Object invoke(Object __, Method method, Object[] args) throws Throwable {
-            return PerformAction.perform(e, e.getClass(), method, args);
+            return PerformAction.create(e, e.getClass(), method, args).perform();
         }
     }
 }

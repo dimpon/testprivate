@@ -2,75 +2,78 @@ package io.github.dimpon.testprivate;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Optional;
-import java.util.function.Predicate;
+
+import io.github.dimpon.testprivate.actions.MethodDetector;
+import io.github.dimpon.testprivate.actions.SetterDetector;
 
 final class PerformAction {
-    private PerformAction() {
-    }
 
-    static Object perform(Object obj, Class<?> clazz, Method method, Object[] args) throws Throwable {
+	private final Object obj;
+	private final Class<?> clazz;
+	private final Method method;
+	private final Object[] args;
+	private ActionDetector<Method> methodDetector = new MethodDetector();
+	private ActionDetector<Field> setterDetector = new SetterDetector();
 
-        Optional<Method> exactMethod = findExactMethod(clazz, method);
+	private PerformAction(Object obj, Class<?> clazz, Method method, Object[] args) {
+		this.obj = obj;
+		this.clazz = clazz;
+		this.method = method;
+		this.args = args.clone();
+	}
 
-        if (exactMethod.isPresent()) {
-            Method declaredMethod = exactMethod.get();
-            return invokeMethod(obj, declaredMethod, args);
-        }
+	static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
+		return new PerformAction(obj, clazz, method, args);
+	}
 
-        throw new TestprivateException("Method is not found in original class/object");
+	Object perform() throws Throwable {
 
-    }
+		Optional<AccessibleObjectAndAction<Method>> methodAndAction = methodDetector
+				.detectActionType(this.obj, this.clazz, this.method, this.args);
 
+		if (methodAndAction.isPresent()) {
+			return invokeMethod(obj, methodAndAction.get().accessibleObject, args);
+		}
 
-    private static Optional<Field> getFieldForGet(Class<?> clazz, Method method) throws Throwable {
+		Optional<AccessibleObjectAndAction<Field>> fieldsAndAction = setterDetector
+				.detectActionType(this.obj, this.clazz, this.method, this.args);
 
-        if (method.getName().startsWith("is") &&
-                (method.getReturnType().equals(Boolean.class) || method.getReturnType().equals(boolean.class))) {
+		if (fieldsAndAction.isPresent()) {
+			setField(this.obj, fieldsAndAction.get().accessibleObject, args[0]);
+			return null;
+		}
 
+		throw new TestprivateException("Method is not found in original class/object");
 
-            return Optional.of(clazz.getDeclaredField(fieldName("is", method.getName())));
+	}
 
-        }
+	/*private static Optional<Field> getFieldForGet(Class<?> clazz, Method method) throws Throwable {
 
-        return Optional.empty();
-    }
+		if (method.getName().startsWith("is") &&
+				(method.getReturnType().equals(Boolean.class) || method.getReturnType().equals(boolean.class))) {
 
+			return Optional.of(clazz.getDeclaredField(fieldName("is", method.getName())));
 
-    private static String fieldName(String prefix, String longName) {
-        char[] chars = longName.substring(prefix.length()).toCharArray();
-        chars[0] = Character.toLowerCase(chars[0]);
-        return new String(chars);
-    }
+		}
 
-    private static Object invokeMethod(Object obj, Method method, Object[] args) throws Throwable {
-        method.setAccessible(true);
-        return method.invoke(obj, args);
-    }
+		return Optional.empty();
+	}
 
+	private static String fieldName(String prefix, String longName) {
+		char[] chars = longName.substring(prefix.length()).toCharArray();
+		chars[0] = Character.toLowerCase(chars[0]);
+		return new String(chars);
+	}*/
 
-    private static Optional<Method> findExactMethod(Class<?> clazz, Method method) {
+	private Object invokeMethod(Object obj, Method method, Object[] args) throws Throwable {
+		method.setAccessible(true);
+		return method.invoke(obj, args);
+	}
 
-        Predicate<Method> isSameName = m -> m.getName().equals(method.getName());
-        Predicate<Method> isSameReturnType = m -> m.getReturnType().equals(method.getReturnType());
-        Predicate<Method> isSameArguments = m -> equalParamTypes(m.getParameterTypes(), method.getParameterTypes());
-
-        return Arrays.stream(clazz.getDeclaredMethods())
-                .filter(isSameName.and(isSameReturnType).and(isSameArguments))
-                .findFirst();
-    }
-
-    private static boolean equalParamTypes(Class<?>[] params1, Class<?>[] params2) {
-        if (params1.length == params2.length) {
-            for (int i = 0; i < params1.length; i++) {
-                if (params1[i] != params2[i])
-                    return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
+	private void setField(Object obj, Field field, Object newValue) throws Throwable {
+		field.setAccessible(true);
+		field.set(obj, newValue);
+	}
 
 }

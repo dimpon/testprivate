@@ -2,6 +2,8 @@ package io.github.dimpon.testprivate;
 
 public class ObjectWithPrivateMethod {
 
+    private String value;
+
     private String duplicateString(String in){
         return in+in;
     }
@@ -10,4 +12,7 @@ public class ObjectWithPrivateMethod {
         return in+in+in;
     }
 
+    public String readValue() {
+        return value;
+    }
 }
