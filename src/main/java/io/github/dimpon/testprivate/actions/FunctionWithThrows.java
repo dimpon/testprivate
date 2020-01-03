@@ -2,6 +2,9 @@ package io.github.dimpon.testprivate.actions;
 
 import java.util.function.Function;
 
+/**
+ * interface Function for sneaking exceptions
+ */
 @FunctionalInterface
 public interface FunctionWithThrows<T,R> extends Function<T,R> {
 
