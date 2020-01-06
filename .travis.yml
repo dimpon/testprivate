@@ -60,6 +60,7 @@ deploy:
       - target/testprivate-$project_version.jar
       - target/testprivate-$project_version-javadoc.jar
       - target/testprivate-$project_version-sources.jar
+    skip_cleanup: true
     cleanup: false
     on:
       repo: dimpon/testprivate
