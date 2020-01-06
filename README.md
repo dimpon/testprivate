@@ -17,16 +17,41 @@ Here the alternative approach is suggested. See the folloging sample.
 Assume that we have class `ObjectWithPrivateMethod` and it has `private String duplicateString(String in)`.  
 The Unit Test for the private method:
 ```java
-    interface DuplicateString {
-        String duplicateString(String in);
+    
+    static public class ObjectWithPrivate {
+	    private String name;
+	
+        private String methodToTest(String in) {
+            return in + in;
+        }
+    }
+
+    //test private method
+    interface TestPrivateMethod {
+        String methodToTest(String in);
     }
 
     @Test
     void callPrivateMethod() {
-         ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
-         DuplicateString duplicateString = cast(o).toInterface(DuplicateString.class);
-         String one = duplicateString.duplicateString("one");
-         Assertions.assertEquals("oneone", one);
+         ObjectWithPrivate obj = new ObjectWithPrivate();
+         TestPrivateMethod castedObj = cast(obj).toInterface(TestPrivateMethod.class);
+         String result = castedObj.methodToTest("one");
+         Assertions.assertEquals("oneone", result);
     }
+    
+    //test private field
+    interface TestPrivateField {
+	    void setName(String name);
+	    String getName();
+    }
+    
+    @Test
+    void callPrivateField() {
+        ObjectWithPrivate obj = new ObjectWithPrivate();
+        TestPrivateField castedObj = cast(obj).toInterface(TestPrivateField.class);
+        castedObj.setName("Vasya Pupkin");
+        Assertions.assertEquals("Vasya Pupkin", castedObj.getName());
+    }
+    
 ```
 
