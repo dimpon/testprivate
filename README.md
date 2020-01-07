@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.com/dimpon/testprivate.svg?branch=master)](https://travis-ci.com/dimpon/testprivate)
 [![codecov](https://codecov.io/gh/dimpon/testprivate/branch/master/graph/badge.svg)](https://codecov.io/gh/dimpon/testprivate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![JavaDoc](http://javadoc-badge.appspot.com/io.github.dimpon/testprivate.svg?label=javadoc)](https://javadocio-badges.herokuapp.com/io.github.dimpon/testprivate)
+
 
 # Library for testing private methods
 
@@ -17,22 +19,41 @@ Here the alternative approach is suggested. See the folloging sample.
 Assume that we have class `ObjectWithPrivateMethod` and it has `private String duplicateString(String in)`.  
 The Unit Test for the private method:
 ```java
-    static public class ObjectWithPrivateMethod {    
-        private String duplicateString(String in) {
-            return in + in;
-        }
-    }
+    
+static public class ObjectWithPrivate {
+    private String name;
 
-    interface DuplicateString {
-        String duplicateString(String in);
+    private String methodToTest(String in) {
+        return in + in;
     }
+}
 
-    @Test
-    void callPrivateMethod() {
-         ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
-         DuplicateString duplicateString = cast(o).toInterface(DuplicateString.class);
-         String one = duplicateString.duplicateString("one");
-         Assertions.assertEquals("oneone", one);
-    }
+//test private method
+interface TestPrivateMethod {
+    String methodToTest(String in);
+}
+
+@Test
+void callPrivateMethod() {
+     ObjectWithPrivate obj = new ObjectWithPrivate();
+     TestPrivateMethod castedObj = cast(obj).toInterface(TestPrivateMethod.class);
+     String result = castedObj.methodToTest("one");
+     Assertions.assertEquals("oneone", result);
+}
+
+//test private field
+interface TestPrivateField {
+    void setName(String name);
+    String getName();
+}
+
+@Test
+void callPrivateField() {
+    ObjectWithPrivate obj = new ObjectWithPrivate();
+    TestPrivateField castedObj = cast(obj).toInterface(TestPrivateField.class);
+    castedObj.setName("Vasya Pupkin");
+    Assertions.assertEquals("Vasya Pupkin", castedObj.getName());
+}
+    
 ```
 
