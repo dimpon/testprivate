@@ -32,7 +32,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import io.github.dimpon.testprivate.Action;
-import io.github.dimpon.testprivate.TestprivateException;
 
 public final class MethodAction implements Action {
 

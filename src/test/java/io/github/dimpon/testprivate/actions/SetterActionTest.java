@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import io.github.dimpon.testprivate.TestprivateException;
 
-public class SetterActionTest {
+class SetterActionTest {
 
 	@Test
 	void setPrivateField() {
