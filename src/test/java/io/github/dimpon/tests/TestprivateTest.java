@@ -3,8 +3,10 @@ package io.github.dimpon.tests;
 import static io.github.dimpon.testprivate.API.cast;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import io.github.dimpon.ClassB;
 import io.github.dimpon.testprivate.TestprivateException;
 
 public class TestprivateTest {
@@ -54,7 +56,20 @@ public class TestprivateTest {
 		});
 	}
 
-	public enum EnumWithPrivateMethods {
+	interface Say{
+		void say();
+	}
+
+	@Test
+	@Disabled
+	void testInheritance() {
+		ClassB b = new ClassB();
+		Say say = cast(b).toInterface(Say.class);
+		say.say();
+	}
+
+
+		public enum EnumWithPrivateMethods {
 		ONE, TWO, THREE;
 
 		private String nameInLowerCase() {
