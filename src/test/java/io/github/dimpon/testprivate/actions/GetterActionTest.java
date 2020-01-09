@@ -33,6 +33,13 @@ class GetterActionTest {
         Assertions.assertEquals(arrayList, obj.getMyList());
     }
 
+    @Test
+    void testStaticFiedAccess() {
+        NameForAll obj = cast(SomePOJOClass.class).toInterface(NameForAll.class);
+        obj.setNameForAll("it is static");
+        Assertions.assertEquals("it is static", obj.getNameForAll());
+    }
+
     interface GetList {
         List getMyList();
     }
@@ -43,8 +50,12 @@ class GetterActionTest {
 
     interface GetBoolean {
         Boolean isFinished();
-
         boolean isNotFinished();
+    }
+
+    interface NameForAll {
+        String getNameForAll();
+        void setNameForAll(String s);
     }
 
     static class SomePOJOClass {
@@ -52,6 +63,8 @@ class GetterActionTest {
         private ArrayList myList;
         private Boolean finished;
         private boolean notFinished;
+
+        private static String nameForAll;
 
         SomePOJOClass(String val) {
             this.val = val;
