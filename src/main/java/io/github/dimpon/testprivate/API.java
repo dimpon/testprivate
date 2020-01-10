@@ -38,7 +38,7 @@ public final class API {
 	 * @param obj object is intended to be casted.
 	 * @return {@link CastToInterface} with single method {@link CastToInterface#toInterface(Class)} which returns dynamic proxy of interface.
 	 */
-	public static CastToInterface cast(Object obj) {
+	public static CastObjectToInterface cast(Object obj) {
 		return new CastObject(obj);
 	}
 
@@ -53,13 +53,5 @@ public final class API {
 		return new CastClass(cla);
 	}
 
-	/**
-	 * Passing enum which is intended to be casted.
-	 *
-	 * @param enu enum is intended to be casted.
-	 * @return {@link CastToInterface} with single method {@link CastToInterface#toInterface(Class)} which returns dynamic proxy of interface.
-	 */
-	public static CastToInterface cast(Enum<?> enu) {
-		return new CastEnum(enu);
-	}
+
 }

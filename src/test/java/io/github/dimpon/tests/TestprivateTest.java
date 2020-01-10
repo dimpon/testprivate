@@ -64,7 +64,7 @@ public class TestprivateTest {
 	@Disabled
 	void testInheritance() {
 		ClassB b = new ClassB();
-		Say say = cast(b).toInterface(Say.class);
+		Say say = cast(b).considerSuperclass().toInterface(Say.class);
 		say.say();
 	}
 

@@ -47,13 +47,15 @@ final class PerformAction {
 		this.method = method;
 		this.args = args;
 
-		detectors.add(new MethodAction());
-		detectors.add(new SetterAction());
-		detectors.add(new GetterAction());
+
 	}
 
 	static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
-		return new PerformAction(obj, clazz, method, args);
+		PerformAction performAction = new PerformAction(obj, clazz, method, args);
+		performAction.detectors.add(new MethodAction());
+		performAction.detectors.add(new SetterAction());
+		performAction.detectors.add(new GetterAction());
+		return performAction;
 	}
 
 	Object perform() {

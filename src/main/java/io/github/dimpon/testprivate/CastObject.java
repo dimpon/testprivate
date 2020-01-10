@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
  * Class allows to call methods of objects using arbitrary interface containing the same methods.
  * Uses Dynamic Proxy for searching the right methods.
  */
-public final class CastObject extends CastToInterface {
+public final class CastObject extends CastObjectToInterface {
 
     private Object o;
 
@@ -39,7 +39,7 @@ public final class CastObject extends CastToInterface {
     }
 
     @Override
-    public InvocationHandler createInvocationHandler() {
+    public InvocationHandler createInvocationHandler(boolean considerSuperclass) {
         return new CastObject.MethodsHandler();
     }
 
