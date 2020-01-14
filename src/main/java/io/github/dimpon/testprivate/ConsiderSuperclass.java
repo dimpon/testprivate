@@ -22,33 +22,14 @@
  * THE SOFTWARE.
  */
 package io.github.dimpon.testprivate;
-public class InstanceCreator<C extends Class<C>> {
-	private C classToInstantiate;
 
-	InstanceCreator(C classToInstantiate) {
-		this.classToInstantiate = classToInstantiate;
-	}
+public abstract class ConsiderSuperclass<C extends ConsiderSuperclass<C>> {
+    protected boolean isConsiderSuperclass = false;
 
-	C withConstructor(Object... args) {
-		return null;
-	}
+    @SuppressWarnings("unchecked")
+    public C considerSuperclass(boolean isConsiderSuperclass) {
+        this.isConsiderSuperclass = isConsiderSuperclass;
+        return (C)this;
+    }
 
-	public static void main(String[] args) {
-
-		boolean a1 = int.class.isAssignableFrom(Integer.class);
-		System.out.println(a1);
-		boolean a2 = Integer.class.isAssignableFrom(int.class);
-		System.out.println(a2);
-
-		boolean a3 = Number.class.isAssignableFrom(Integer.class);
-		System.out.println(a3);
-
-		boolean a4 = Integer.class.isAssignableFrom(Number.class);
-		System.out.println(a4);
-		System.out.println();
-
-		System.out.println(int.class.isPrimitive());
-		System.out.println(Integer.class.isPrimitive());
-
-	}
 }

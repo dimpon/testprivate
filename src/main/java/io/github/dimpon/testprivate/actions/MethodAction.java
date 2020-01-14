@@ -32,8 +32,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import io.github.dimpon.testprivate.Action;
+import io.github.dimpon.testprivate.ConsiderSuperclass;
 
-public final class MethodAction implements Action {
+public final class MethodAction extends ConsiderSuperclass<MethodAction> implements Action {
 
     @Override
     public Optional<Object> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
@@ -47,11 +48,19 @@ public final class MethodAction implements Action {
                 .filter(hasSameArguments)
                 .findFirst();
 
+        if (isConsiderSuperclass && !hasMethod.isPresent() && clazz.getSuperclass() != null) {
+            return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
+        }
+
         return hasMethod.map((FunctionWithThrows<Method, Object>) m -> invokeMethod(obj, m, args));
     }
 
     private static Object invokeMethod(Object obj, Method method, Object[] args) throws Throwable {
         method.setAccessible(true);
-        return method.invoke(obj, args);
+        Object r =  method.invoke(obj, args);
+        if(method.getReturnType().equals(void.class))
+            return new Object();
+
+        return r;
     }
 }

@@ -32,39 +32,36 @@ import io.github.dimpon.testprivate.actions.GetterAction;
 import io.github.dimpon.testprivate.actions.MethodAction;
 import io.github.dimpon.testprivate.actions.SetterAction;
 
-final class PerformAction {
+final class PerformAction extends ConsiderSuperclass<PerformAction> {
 
-	private final Object obj;
-	private final Class<?> clazz;
-	private final Method method;
-	private final Object[] args;
+    private final Object obj;
+    private final Class<?> clazz;
+    private final Method method;
+    private final Object[] args;
 
-	private final List<Action> detectors = new ArrayList<>();
+    private PerformAction(Object obj, Class<?> clazz, Method method, Object[] args) {
+        this.obj = obj;
+        this.clazz = clazz;
+        this.method = method;
+        this.args = args;
+    }
 
-	private PerformAction(Object obj, Class<?> clazz, Method method, Object[] args) {
-		this.obj = obj;
-		this.clazz = clazz;
-		this.method = method;
-		this.args = args;
+    static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
+        return new PerformAction(obj, clazz, method, args);
+    }
 
+    Object perform() {
+        final List<Action> detectors = new ArrayList<>();
+        detectors.add(new MethodAction().considerSuperclass(isConsiderSuperclass));
+        detectors.add(new SetterAction());
+        detectors.add(new GetterAction());
 
-	}
+        for (Action a : detectors) {
+            Optional<Object> result = a.performAndReturnResult(this.obj, this.clazz, this.method, this.args);
+            if (result.isPresent())
+                return result.get();
+        }
 
-	static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
-		PerformAction performAction = new PerformAction(obj, clazz, method, args);
-		performAction.detectors.add(new MethodAction());
-		performAction.detectors.add(new SetterAction());
-		performAction.detectors.add(new GetterAction());
-		return performAction;
-	}
-
-	Object perform() {
-		for (Action a : detectors) {
-			Optional<Object> result = a.performAndReturnResult(this.obj,this.clazz,this.method,this.args);
-			if (result.isPresent())
-				return result.get();
-		}
-
-		throw new TestprivateException("Method is not found in original class/object");
-	}
+        throw new TestprivateException("Method is not found in original class/object");
+    }
 }

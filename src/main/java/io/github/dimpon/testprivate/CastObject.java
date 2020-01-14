@@ -39,14 +39,16 @@ public final class CastObject extends CastObjectToInterface {
     }
 
     @Override
-    public InvocationHandler createInvocationHandler(boolean considerSuperclass) {
+    public InvocationHandler createInvocationHandler() {
         return new CastObject.MethodsHandler();
     }
 
     class MethodsHandler implements InvocationHandler {
         @Override
         public Object invoke(Object __, Method method, Object[] args) {
-            return PerformAction.create(o, o.getClass(), method, args).perform();
+            return PerformAction.create(o, o.getClass(), method, args)
+                    .considerSuperclass(considerSuperclass)
+                    .perform();
         }
     }
 }

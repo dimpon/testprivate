@@ -61,7 +61,7 @@ public class TestprivateTest {
 	}
 
 	@Test
-	@Disabled
+	//@Disabled
 	void testInheritance() {
 		ClassB b = new ClassB();
 		Say say = cast(b).considerSuperclass().toInterface(Say.class);
