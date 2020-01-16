@@ -33,11 +33,12 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import io.github.dimpon.testprivate.Action;
+import io.github.dimpon.testprivate.MethodResult;
 
 public final class SetterAction implements Action {
 
     @Override
-    public Optional<Object> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
+    public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
 
         Predicate<Method> hasOneArgument = m -> m.getParameterTypes().length == 1;
         Predicate<Method> hasStartsWithSet = m -> m.getName().startsWith("set");
@@ -60,7 +61,7 @@ public final class SetterAction implements Action {
                 .filter(hasCorrespondingType)
                 .findFirst();
 
-        return hasField.map((FunctionWithThrows<Field, Object>) f -> setFieldValue(obj, f, args));
+        return hasField.map(f -> setFieldValue(obj, f, args));
     }
 
     private static String fieldName(String longName) {
@@ -69,9 +70,13 @@ public final class SetterAction implements Action {
         return new String(chars);
     }
 
-    private static Object setFieldValue(Object obj, Field field, Object[] args) throws Throwable {
+    private static MethodResult setFieldValue(Object obj, Field field, Object[] args) {
         field.setAccessible(true);
-        field.set(obj, args[0]);
-        return new Object();
+        try {
+            field.set(obj, args[0]);
+            return MethodResult.successful(null);
+        } catch (Throwable e) {
+            return MethodResult.failed();
+        }
     }
 }

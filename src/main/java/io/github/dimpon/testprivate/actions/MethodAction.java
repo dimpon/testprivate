@@ -33,11 +33,12 @@ import javax.annotation.Nullable;
 
 import io.github.dimpon.testprivate.Action;
 import io.github.dimpon.testprivate.ConsiderSuperclass;
+import io.github.dimpon.testprivate.MethodResult;
 
 public final class MethodAction extends ConsiderSuperclass<MethodAction> implements Action {
 
     @Override
-    public Optional<Object> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
+    public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
         Predicate<Method> hasSameName = m -> m.getName().equals(method.getName());
         Predicate<Method> hasSameReturnType = m -> m.getReturnType().equals(method.getReturnType());
         Predicate<Method> hasSameArguments = m -> Arrays.deepEquals(m.getParameterTypes(), method.getParameterTypes());
@@ -52,15 +53,15 @@ public final class MethodAction extends ConsiderSuperclass<MethodAction> impleme
             return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
         }
 
-        return hasMethod.map((FunctionWithThrows<Method, Object>) m -> invokeMethod(obj, m, args));
+        return hasMethod.map(m -> invokeMethod(obj, m, args));
     }
 
-    private static Object invokeMethod(Object obj, Method method, Object[] args) throws Throwable {
+    private static MethodResult invokeMethod(Object obj, Method method, Object[] args) {
         method.setAccessible(true);
-        Object r =  method.invoke(obj, args);
-        if(method.getReturnType().equals(void.class))
-            return new Object();
-
-        return r;
+        try {
+            return MethodResult.successful(method.invoke(obj, args));
+        } catch (Throwable e) {
+            return MethodResult.failed();
+        }
     }
 }

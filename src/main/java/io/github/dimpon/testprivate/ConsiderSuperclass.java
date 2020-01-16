@@ -31,5 +31,4 @@ public abstract class ConsiderSuperclass<C extends ConsiderSuperclass<C>> {
         this.isConsiderSuperclass = isConsiderSuperclass;
         return (C)this;
     }
-
 }

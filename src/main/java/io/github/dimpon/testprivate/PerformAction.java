@@ -57,11 +57,11 @@ final class PerformAction extends ConsiderSuperclass<PerformAction> {
         detectors.add(new GetterAction());
 
         for (Action a : detectors) {
-            Optional<Object> result = a.performAndReturnResult(this.obj, this.clazz, this.method, this.args);
-            if (result.isPresent())
-                return result.get();
+            Optional<MethodResult> result = a.performAndReturnResult(this.obj, this.clazz, this.method, this.args);
+            if (result.isPresent() && result.get().isSuccessful())
+                return result.get().value;
         }
 
-        throw new TestprivateException("Method is not found in original class/object");
+        throw new TestprivateException("Method " + method + " is not found in original class/object");
     }
 }

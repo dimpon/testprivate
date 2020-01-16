@@ -21,29 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
-package io.github.dimpon.testprivate.actions;
-
-import java.util.function.Function;
+package io.github.dimpon.testprivate;
 
 /**
- * interface Function for sneaking exceptions
+ * Immutable container for result of method invocation
+ * Contains whether it successful or not and returned value
  */
-@FunctionalInterface
-public interface FunctionWithThrows<T,R> extends Function<T,R> {
-
-    default R apply(T t){
-        try {
-            return applyWithThrowable(t);
-        } catch (Throwable ex) {
-            return sneakyThrow(ex);
-        }
+public final class MethodResult {
+    public enum ResultType {
+        SUCCESSFUL,
+        FAILED;
     }
 
-    R applyWithThrowable(T t) throws Throwable;
+    private final ResultType resultType;
+    final Object value;
 
-    @SuppressWarnings("unchecked")
-     static <E extends Throwable, R> R sneakyThrow(Throwable t) throws E {
-        throw (E) t;
+    private MethodResult(ResultType resultType, Object value) {
+        this.resultType = resultType;
+        this.value = value;
+    }
+
+    public static MethodResult successful(Object value) {
+        return new MethodResult(ResultType.SUCCESSFUL, value);
+    }
+
+    public static MethodResult failed() {
+        return new MethodResult(ResultType.FAILED, null);
+    }
+
+    boolean isSuccessful() {
+        return resultType == ResultType.SUCCESSFUL;
     }
 }

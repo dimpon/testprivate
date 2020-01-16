@@ -33,5 +33,5 @@ import javax.annotation.Nullable;
  */
 @FunctionalInterface
 public interface Action {
-	Optional<Object> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args);
+	Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args);
 }
