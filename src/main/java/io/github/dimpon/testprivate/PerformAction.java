@@ -53,8 +53,8 @@ final class PerformAction extends ConsiderSuperclass<PerformAction> {
     Object perform() {
         final List<Action> detectors = new ArrayList<>();
         detectors.add(new MethodAction().considerSuperclass(isConsiderSuperclass));
-        detectors.add(new SetterAction());
-        detectors.add(new GetterAction());
+        detectors.add(new SetterAction().considerSuperclass(isConsiderSuperclass));
+        detectors.add(new GetterAction().considerSuperclass(isConsiderSuperclass));
 
         for (Action a : detectors) {
             Optional<MethodResult> result = a.performAndReturnResult(this.obj, this.clazz, this.method, this.args);
@@ -62,6 +62,6 @@ final class PerformAction extends ConsiderSuperclass<PerformAction> {
                 return result.get().value;
         }
 
-        throw new TestprivateException("Method " + method + " is not found in original class/object");
+        throw new TestprivateException("Method (or field matches to method) " + method + " is not found in original class/object");
     }
 }

@@ -33,25 +33,23 @@ public final class API {
 	}
 
 	/**
-	 * Passing object which is intended to be casted.
+	 * Passing class contains private methods or fields.
 	 *
 	 * @param obj object is intended to be casted.
-	 * @return {@link CastToInterface} with single method {@link CastToInterface#toInterface(Class)} which returns dynamic proxy of interface.
+	 * @return {@link UsingInterface} with single method {@link UsingInterface#usingInterface(Class)} which returns dynamic proxy of interface.
 	 */
-	public static CastObjectToInterface cast(Object obj) {
-		return new CastObject(obj);
+	public static LookupInSuperclass lookupPrivatesIn(Object obj) {
+		return new LookupInObject(obj);
 	}
 
 	/**
-	 * Passing class which is intended to be casted.
+	 * Passing class contains private methods or fields.
 	 * Need to understand, that static methods of the class will be invoked.
 	 *
 	 * @param cla class is intended to be casted.
-	 * @return {@link CastToInterface} with single method {@link CastToInterface#toInterface(Class)} which returns dynamic proxy of interface.
+	 * @return {@link UsingInterface} with single method {@link UsingInterface#usingInterface(Class)} which returns dynamic proxy of interface.
 	 */
-	public static CastToInterface cast(Class<?> cla) {
-		return new CastClass(cla);
+	public static UsingInterface lookupPrivatesIn(Class<?> cla) {
+		return new LookupInClass(cla);
 	}
-
-
 }

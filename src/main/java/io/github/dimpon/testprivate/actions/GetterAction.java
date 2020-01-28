@@ -33,10 +33,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import io.github.dimpon.testprivate.Action;
+import io.github.dimpon.testprivate.ConsiderSuperclass;
 import io.github.dimpon.testprivate.MethodResult;
 import io.github.dimpon.testprivate.TestprivateException;
 
-public final class GetterAction implements Action {
+public final class GetterAction extends ConsiderSuperclass<GetterAction> implements Action {
 
     @Override
     public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
@@ -62,6 +63,10 @@ public final class GetterAction implements Action {
                 .filter(hasCorrespondingName)
                 .filter(hasCorrespondingType)
                 .findFirst();
+
+        if (needToCheckSuperclass(hasField, clazz)) {
+            return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
+        }
 
         return hasField.map(f -> getFieldValue(obj, f));
     }

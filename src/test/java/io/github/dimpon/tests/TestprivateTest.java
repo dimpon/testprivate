@@ -1,9 +1,9 @@
 package io.github.dimpon.tests;
 
-import static io.github.dimpon.testprivate.API.cast;
+import static io.github.dimpon.testprivate.API.lookupPrivatesIn;
 
+import io.github.dimpon.testprivate.API;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import io.github.dimpon.ClassB;
@@ -14,7 +14,7 @@ public class TestprivateTest {
     @Test
     void callPrivateMethod() {
         ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
-        DuplicateString duplicateString = cast(o).toInterface(DuplicateString.class);
+        DuplicateString duplicateString = API.lookupPrivatesIn(o).usingInterface(DuplicateString.class);
         String one = duplicateString.duplicateString("one");
         Assertions.assertEquals("oneone", one);
     }
@@ -22,7 +22,7 @@ public class TestprivateTest {
     @Test
     void setPrivateField() {
         ObjectWithPrivateMethod o = new ObjectWithPrivateMethod();
-        SetString obj = cast(o).toInterface(SetString.class);
+        SetString obj = API.lookupPrivatesIn(o).usingInterface(SetString.class);
         obj.setValue("newValue");
         Assertions.assertEquals("newValue", o.readValue());
     }
@@ -30,21 +30,21 @@ public class TestprivateTest {
     @Test
     void getPrivateField() {
         ObjectWithPrivateMethod o = new ObjectWithPrivateMethod("wiredValue");
-        GetString obj = cast(o).toInterface(GetString.class);
+        GetString obj = API.lookupPrivatesIn(o).usingInterface(GetString.class);
         Assertions.assertEquals("wiredValue", obj.getValue());
     }
 
     @Test
     void callPrivateEnumMethod() {
         EnumWithPrivateMethods e = EnumWithPrivateMethods.ONE;
-        ToLowerCase toLowerCase = cast(e).toInterface(ToLowerCase.class);
+        ToLowerCase toLowerCase = API.lookupPrivatesIn(e).usingInterface(ToLowerCase.class);
         String one = toLowerCase.nameInLowerCase();
         Assertions.assertEquals("one", one);
     }
 
     @Test
     void callPrivateStaticMethod() {
-        TriplicateString triplicateString = cast(ObjectWithPrivateMethod.class).toInterface(TriplicateString.class);
+        TriplicateString triplicateString = lookupPrivatesIn(ObjectWithPrivateMethod.class).usingInterface(TriplicateString.class);
         String one = triplicateString.triplicateString("one");
         Assertions.assertEquals("oneoneone", one);
     }
@@ -52,41 +52,57 @@ public class TestprivateTest {
     @Test
     void passNotInterfaceForCast() {
         Assertions.assertThrows(TestprivateException.class, () -> {
-            cast(ObjectWithPrivateMethod.class).toInterface(Pole.class);
+            lookupPrivatesIn(ObjectWithPrivateMethod.class).usingInterface(Pole.class);
         });
     }
 
     @Test
     void testMethodNotFound() {
         TestprivateException ex = Assertions.assertThrows(TestprivateException.class, () -> {
-            cast(new OblectWithdDplicateStringMethod()).toInterface(ToLowerCase.class).nameInLowerCase();
+            API.lookupPrivatesIn(new OblectWithdDplicateStringMethod()).usingInterface(ToLowerCase.class).nameInLowerCase();
         });
 
-        Assertions.assertEquals("Method public abstract java.lang.String io.github.dimpon.tests.TestprivateTest$ToLowerCase.nameInLowerCase() is not found in original class/object",ex.getMessage());
+        Assertions.assertEquals("Method (or field matches to method) public abstract java.lang.String io.github.dimpon.tests.TestprivateTest$ToLowerCase.nameInLowerCase() is not found in original class/object",ex.getMessage());
     }
 
     interface Say {
         void say();
     }
 
+    interface Count {
+        int getCount();
+        void setCount(int count);
+    }
+
     @Test
     void testMethodFromSuperclass() {
         ClassB b = new ClassB();
-        Say say = cast(b).considerSuperclass().toInterface(Say.class);
+        Say say = API.lookupPrivatesIn(b).lookupInSuperclass().usingInterface(Say.class);
         say.say();
     }
 
     @Test
+    void testFieldFromSuperclass() {
+        ClassB b = new ClassB();
+        Count count = API.lookupPrivatesIn(b).lookupInSuperclass().usingInterface(Count.class);
+        count.setCount(1000);
+        Assertions.assertEquals(1000,count.getCount());
+    }
+
+
+
+
+    @Test
     void testMethodReturnsNull() {
         OblectWithdDplicateStringMethod b = new OblectWithdDplicateStringMethod();
-        DuplicateString d = cast(b).considerSuperclass().toInterface(DuplicateString.class);
+        DuplicateString d = API.lookupPrivatesIn(b).lookupInSuperclass().usingInterface(DuplicateString.class);
         Assertions.assertNull(d.duplicateString("smth"));
     }
 
     @Test
     void testGetterReturnsNull() {
         OblectWithdDplicateStringMethod b = new OblectWithdDplicateStringMethod();
-        GetString d = cast(b).considerSuperclass().toInterface(GetString.class);
+        GetString d = API.lookupPrivatesIn(b).lookupInSuperclass().usingInterface(GetString.class);
         Assertions.assertNull(d.getValue());
     }
 

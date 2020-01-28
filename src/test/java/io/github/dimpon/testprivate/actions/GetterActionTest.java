@@ -1,10 +1,11 @@
 package io.github.dimpon.testprivate.actions;
 
-import static io.github.dimpon.testprivate.API.cast;
+import static io.github.dimpon.testprivate.API.lookupPrivatesIn;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.dimpon.testprivate.API;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +14,14 @@ class GetterActionTest {
     @Test
     void getPrivateString() {
         SomePOJOClass o = new SomePOJOClass("hello");
-        GetString obj = cast(o).toInterface(GetString.class);
+        GetString obj = API.lookupPrivatesIn(o).usingInterface(GetString.class);
         Assertions.assertEquals("hello", obj.getVal());
     }
 
     @Test
     void getPrivateBoolean() {
         SomePOJOClass o = new SomePOJOClass(true);
-        GetBoolean obj = cast(o).toInterface(GetBoolean.class);
+        GetBoolean obj = API.lookupPrivatesIn(o).usingInterface(GetBoolean.class);
         Assertions.assertTrue(obj.isFinished());
         Assertions.assertFalse(obj.isNotFinished());
     }
@@ -29,13 +30,13 @@ class GetterActionTest {
     void getPrivateList() {
         ArrayList arrayList = new ArrayList();
         SomePOJOClass o = new SomePOJOClass(arrayList);
-        GetList obj = cast(o).toInterface(GetList.class);
+        GetList obj = API.lookupPrivatesIn(o).usingInterface(GetList.class);
         Assertions.assertEquals(arrayList, obj.getMyList());
     }
 
     @Test
     void testStaticFiedAccess() {
-        NameForAll obj = cast(SomePOJOClass.class).toInterface(NameForAll.class);
+        NameForAll obj = lookupPrivatesIn(SomePOJOClass.class).usingInterface(NameForAll.class);
         obj.setNameForAll("it is static");
         Assertions.assertEquals("it is static", obj.getNameForAll());
     }

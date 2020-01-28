@@ -26,10 +26,10 @@ package io.github.dimpon.testprivate;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
-public abstract class CastToInterface {
+public abstract class UsingInterface {
 
 	@SuppressWarnings("unchecked")
-	public <T> T toInterface(Class<T> interfaceClass) {
+	public <T> T usingInterface(Class<T> interfaceClass) {
 
 		if (!interfaceClass.isInterface())
 			throw new TestprivateException("Only interface class can be used for casting");

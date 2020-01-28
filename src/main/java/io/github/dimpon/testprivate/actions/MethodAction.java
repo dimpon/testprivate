@@ -49,7 +49,7 @@ public final class MethodAction extends ConsiderSuperclass<MethodAction> impleme
                 .filter(hasSameArguments)
                 .findFirst();
 
-        if (isConsiderSuperclass && !hasMethod.isPresent() && clazz.getSuperclass() != null) {
+        if (needToCheckSuperclass(hasMethod, clazz)) {
             return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
         }
 

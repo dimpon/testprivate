@@ -27,28 +27,26 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /**
- * Class allows to call methods of objects using arbitrary interface containing the same methods.
+ * Class allows to call static methods of class using arbitrary interface containing the same methods.
  * Uses Dynamic Proxy for searching the right methods.
  */
-public final class CastObject extends CastObjectToInterface {
+public final class LookupInClass extends UsingInterface {
 
-    private Object o;
+    private Class<?> c;
 
-    CastObject(Object o) {
-        this.o = o;
+    LookupInClass(Class<?> c) {
+        this.c = c;
     }
 
     @Override
     public InvocationHandler createInvocationHandler() {
-        return new CastObject.MethodsHandler();
+        return new LookupInClass.MethodsHandler();
     }
 
     class MethodsHandler implements InvocationHandler {
         @Override
         public Object invoke(Object __, Method method, Object[] args) {
-            return PerformAction.create(o, o.getClass(), method, args)
-                    .considerSuperclass(considerSuperclass)
-                    .perform();
+            return PerformAction.create(c, c, method, args).perform();
         }
     }
 }

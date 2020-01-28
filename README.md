@@ -33,10 +33,11 @@ interface TestPrivateMethod {
     String methodToTest(String in);
 }
 
+
 @Test
 void callPrivateMethod() {
      ObjectWithPrivate obj = new ObjectWithPrivate();
-     TestPrivateMethod castedObj = cast(obj).toInterface(TestPrivateMethod.class);
+     TestPrivateMethod castedObj = lookupPrivatesIn(obj).usingInterface(TestPrivateMethod.class);
      String result = castedObj.methodToTest("one");
      Assertions.assertEquals("oneone", result);
 }
@@ -50,7 +51,7 @@ interface TestPrivateField {
 @Test
 void callPrivateField() {
     ObjectWithPrivate obj = new ObjectWithPrivate();
-    TestPrivateField castedObj = cast(obj).toInterface(TestPrivateField.class);
+    TestPrivateField castedObj = lookupPrivatesIn(obj).usingInterface(TestPrivateField.class);
     castedObj.setName("Vasya Pupkin");
     Assertions.assertEquals("Vasya Pupkin", castedObj.getName());
 }

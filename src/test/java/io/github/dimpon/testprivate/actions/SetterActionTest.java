@@ -1,9 +1,10 @@
 package io.github.dimpon.testprivate.actions;
-import static io.github.dimpon.testprivate.API.cast;
+import static io.github.dimpon.testprivate.API.lookupPrivatesIn;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.dimpon.testprivate.API;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ class SetterActionTest {
 	@Test
 	void setPrivateField() {
 		SomePOJOClass o = new SomePOJOClass();
-		PlaysWithPrivateField obj = cast(o).toInterface(PlaysWithPrivateField.class);
+		PlaysWithPrivateField obj = API.lookupPrivatesIn(o).usingInterface(PlaysWithPrivateField.class);
 
 		Assertions.assertThrows(TestprivateException.class, () -> obj.putValue("some"), "setter must be started from 'set'");
 
@@ -30,7 +31,7 @@ class SetterActionTest {
 	@Test
 	void setSubtypeToPrivateField() {
 		SomePOJOClass o = new SomePOJOClass();
-		SetupArrayList obj = cast(o).toInterface(SetupArrayList.class);
+		SetupArrayList obj = API.lookupPrivatesIn(o).usingInterface(SetupArrayList.class);
 		ArrayList arrayList = new ArrayList();
 		obj.setMyList(arrayList);
 
