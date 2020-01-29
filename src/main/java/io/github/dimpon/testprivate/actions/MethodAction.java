@@ -35,10 +35,14 @@ import io.github.dimpon.testprivate.Action;
 import io.github.dimpon.testprivate.ConsiderSuperclass;
 import io.github.dimpon.testprivate.MethodResult;
 
+/**
+ * Action searches corresponding method name and call it
+ */
 public final class MethodAction extends ConsiderSuperclass<MethodAction> implements Action {
 
     @Override
     public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
+
         Predicate<Method> hasSameName = m -> m.getName().equals(method.getName());
         Predicate<Method> hasSameReturnType = m -> m.getReturnType().equals(method.getReturnType());
         Predicate<Method> hasSameArguments = m -> Arrays.deepEquals(m.getParameterTypes(), method.getParameterTypes());

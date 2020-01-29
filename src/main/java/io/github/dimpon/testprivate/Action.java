@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Interface for execution methods and performing real actions hidden beneath.
+ * Interface for execution methods and performing real actions on objects/classes.
  */
 @FunctionalInterface
 public interface Action {

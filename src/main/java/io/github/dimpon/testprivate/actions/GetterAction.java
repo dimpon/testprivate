@@ -37,19 +37,22 @@ import io.github.dimpon.testprivate.ConsiderSuperclass;
 import io.github.dimpon.testprivate.MethodResult;
 import io.github.dimpon.testprivate.TestprivateException;
 
+/**
+ * Action searches field by method name and returns its value
+ */
 public final class GetterAction extends ConsiderSuperclass<GetterAction> implements Action {
 
     @Override
     public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
 
         Predicate<Method> hasNoArguments = m -> m.getParameterTypes().length == 0;
-        Predicate<Method> hasStartsWithGet = m -> m.getName().startsWith("get");
-        Predicate<Method> hasStartsWithIs = m -> m.getName().startsWith("is");
+        Predicate<Method> isStartsWithGet = m -> m.getName().startsWith("get");
+        Predicate<Method> isStartsWithIs = m -> m.getName().startsWith("is");
         Predicate<Method> hasReturnTypeBoolean = m -> m.getReturnType().equals(boolean.class) || m.getReturnType().equals(Boolean.class);
 
         Optional<Method> isMethodCorrect = Optional.of(method)
                 .filter(hasNoArguments)
-                .filter(hasStartsWithIs.and(hasReturnTypeBoolean).or(hasStartsWithGet));
+                .filter(isStartsWithIs.and(hasReturnTypeBoolean).or(isStartsWithGet));
 
         if (!isMethodCorrect.isPresent())
             return Optional.empty();

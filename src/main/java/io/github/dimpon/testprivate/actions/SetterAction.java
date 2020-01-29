@@ -36,24 +36,28 @@ import io.github.dimpon.testprivate.Action;
 import io.github.dimpon.testprivate.ConsiderSuperclass;
 import io.github.dimpon.testprivate.MethodResult;
 
+/**
+ * Action searches field by method name and sets its value
+ */
 public final class SetterAction extends ConsiderSuperclass<SetterAction> implements Action {
 
     @Override
     public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
 
         Predicate<Method> hasOneArgument = m -> m.getParameterTypes().length == 1;
-        Predicate<Method> hasStartsWithSet = m -> m.getName().startsWith("set");
+        Predicate<Method> isStartsWithSet = m -> m.getName().startsWith("set");
         Predicate<Method> hasReturnTypeVoid = m -> m.getReturnType().equals(void.class);
 
         Optional<Method> isMethodCorrect = Optional.of(method)
                 .filter(hasOneArgument)
-                .filter(hasStartsWithSet)
+                .filter(isStartsWithSet)
                 .filter(hasReturnTypeVoid);
 
         if (!isMethodCorrect.isPresent())
             return Optional.empty();
 
         final String fieldName = fieldName(method.getName());
+
         Predicate<Field> hasCorrespondingName = f -> f.getName().equals(fieldName);
         Predicate<Field> hasCorrespondingType = f -> f.getType().isAssignableFrom(method.getParameterTypes()[0]);
 
