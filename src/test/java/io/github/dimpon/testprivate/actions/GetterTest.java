@@ -17,6 +17,7 @@ class GetterTest {
     @Test
     void getPrivateStringGenerics() {
         ValueContainer<String> o = new ValueContainer<>("hello");
+        @SuppressWarnings("unchecked")
         GetValue<String> obj = API.lookupPrivatesIn(o).usingInterface(GetValue.class);
         Assertions.assertEquals("hello", obj.getValue());
     }
@@ -25,6 +26,7 @@ class GetterTest {
     void getPrivateListGenerics() {
         ArrayList arrayList = new ArrayList();
         ValueContainer<ArrayList> o = new ValueContainer<>(arrayList);
+        @SuppressWarnings("unchecked")
         GetValue<List> obj = API.lookupPrivatesIn(o).usingInterface(GetValue.class);
         Assertions.assertEquals(arrayList, obj.getValue());
     }
