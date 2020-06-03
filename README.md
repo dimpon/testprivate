@@ -15,7 +15,14 @@ Basically there are 3 approaches:
 2. Use reflection or some utility classes e.g. Whitebox from Powermock
 3. Use code generation on the fly - e.g. Mockito, Powermock
 
-Here the alternative approach is suggested. See the folloging sample. 
+Here the alternative approach suggested. See the folloging sample. 
+```xml
+        <dependency>
+            <groupId>io.github.dimpon</groupId>
+            <artifactId>testprivate</artifactId>
+            <version>0.0.38</version>
+        </dependency>
+```
 Assume that we have class `ObjectWithPrivateMethod` and it has `private String duplicateString(String in)`.  
 The Unit Test for the private method:
 ```java
