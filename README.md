@@ -21,6 +21,7 @@ Here the alternative approach suggested. See the folloging sample.
             <groupId>io.github.dimpon</groupId>
             <artifactId>testprivate</artifactId>
             <version>0.0.38</version>
+            <scope>test</scope>
         </dependency>
 ```
 Assume that we have class `ObjectWithPrivateMethod` and it has `private String duplicateString(String in)`.  
