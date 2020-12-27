@@ -67,6 +67,16 @@ public class InstantiationTest {
     }
 
     @Test
+    void createObjectWithFloat() {
+        float a = 37f;
+        Float b = new Float(a);
+        float c = 37f;
+        float d = 37f;
+        ClassC classC = API.createInstanceOf(ClassC.class).withArguments(a,b,c,d);
+        Assertions.assertEquals("37.037.037.037.0", classC.result);
+    }
+
+    @Test
     void createFromPrivateDefault() {
         ClassD u = API.createInstanceOf(ClassD.class).withArguments();
         Assertions.assertTrue(u instanceof ClassD);

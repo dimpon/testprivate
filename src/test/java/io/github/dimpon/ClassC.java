@@ -6,6 +6,9 @@ public class ClassC {
     private Object c;
     private Long d;
 
+    private ClassC(String result){
+        this.result = result;
+    }
 
     private ClassC(int a, String b, Object c, Long d) {
         this.a = a;
@@ -49,6 +52,10 @@ public class ClassC {
     }
 
     private ClassC(long a, long b, Long c, Object d) {
+        this.result = "" + a + b + c + d;
+    }
+
+    private ClassC(float a, float b, Float c, Object d) {
         this.result = "" + a + b + c + d;
     }
 }

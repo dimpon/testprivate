@@ -79,89 +79,33 @@ public class InstanceCreator<C> {
     }
 
     private static boolean matchingWithPrimitives(Class<?> argType, Class<?> constrArgType) {
-        if (!argType.isPrimitive() && !constrArgType.isPrimitive())
+        if (!constrArgType.isPrimitive())
             return false;
 
         ///
-        if (argType.equals(byte.class) && constrArgType.equals(byte.class))
-            return true;
-
         if (argType.equals(Byte.class) && constrArgType.equals(byte.class))
             return true;
-
-        if (argType.equals(byte.class) && constrArgType.equals(Byte.class))
-            return true;
-
         ///
-        if (argType.equals(short.class) && constrArgType.equals(short.class))
-            return true;
-
         if (argType.equals(Short.class) && constrArgType.equals(short.class))
             return true;
-
-        if (argType.equals(short.class) && constrArgType.equals(Short.class))
-            return true;
-
         ///
-        if (argType.equals(int.class) && constrArgType.equals(int.class))
-            return true;
-
         if (argType.equals(Integer.class) && constrArgType.equals(int.class))
             return true;
-
-        if (argType.equals(int.class) && constrArgType.equals(Integer.class))
-            return true;
-
         ///
-        if (argType.equals(long.class) && constrArgType.equals(long.class))
-            return true;
-
         if (argType.equals(Long.class) && constrArgType.equals(long.class))
             return true;
-
-        if (argType.equals(long.class) && constrArgType.equals(Long.class))
-            return true;
-
         ///
-        if (argType.equals(float.class) && constrArgType.equals(float.class))
-            return true;
-
         if (argType.equals(Float.class) && constrArgType.equals(float.class))
             return true;
-
-        if (argType.equals(float.class) && constrArgType.equals(Float.class))
-            return true;
-
         ///
-        if (argType.equals(double.class) && constrArgType.equals(double.class))
-            return true;
-
         if (argType.equals(Double.class) && constrArgType.equals(double.class))
             return true;
-
-        if (argType.equals(double.class) && constrArgType.equals(Double.class))
-            return true;
-
         ////
-        if (argType.equals(boolean.class) && constrArgType.equals(boolean.class))
-            return true;
-
         if (argType.equals(Boolean.class) && constrArgType.equals(boolean.class))
             return true;
-
-        if (argType.equals(boolean.class) && constrArgType.equals(Boolean.class))
-            return true;
-
         ////
-        if (argType.equals(char.class) && constrArgType.equals(char.class))
-            return true;
-
         if (argType.equals(Character.class) && constrArgType.equals(char.class))
             return true;
-
-        if (argType.equals(char.class) && constrArgType.equals(Character.class))
-            return true;
-
 
         return false;
     }
