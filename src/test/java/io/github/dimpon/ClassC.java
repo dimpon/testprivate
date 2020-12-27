@@ -43,4 +43,12 @@ public class ClassC {
     private ClassC(short a, short b, Short c, Object d) {
         this.result = "" + a + b + c + d;
     }
+
+    private ClassC(int a, int b, Integer c, Object d) {
+        this.result = "" + a + b + c + d;
+    }
+
+    private ClassC(long a, long b, Long c, Object d) {
+        this.result = "" + a + b + c + d;
+    }
 }

@@ -47,6 +47,26 @@ public class InstantiationTest {
     }
 
     @Test
+    void createObjectWithInteger() {
+        int a = 0b0010_0101;
+        Integer b = new Integer(a);
+        int c = 0b0010_0101;
+        int d = 0b0010_0101;
+        ClassC classC = API.createInstanceOf(ClassC.class).withArguments(a,b,c,d);
+        Assertions.assertEquals("37373737", classC.result);
+    }
+
+    @Test
+    void createObjectWithLong() {
+        long a = 0b0010_0101;
+        Long b = new Long(a);
+        long c = 0b0010_0101;
+        long d = 0b0010_0101;
+        ClassC classC = API.createInstanceOf(ClassC.class).withArguments(a,b,c,d);
+        Assertions.assertEquals("37373737", classC.result);
+    }
+
+    @Test
     void createFromPrivateDefault() {
         ClassD u = API.createInstanceOf(ClassD.class).withArguments();
         Assertions.assertTrue(u instanceof ClassD);
