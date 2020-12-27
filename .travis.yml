@@ -19,9 +19,9 @@ install: echo "install..."
 script: ./mvnw clean test jacoco:report -e -B
 
 #class not found issue when cache is enabled
-#cache:
-#  directories:
-#    - $HOME/.m2
+cache:
+  directories:
+    - $HOME/.m2
 
 #save current version from pom
 before_deploy:

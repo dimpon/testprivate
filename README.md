@@ -1,5 +1,5 @@
-[![GitHub Release](https://img.shields.io/github/release/dimpon/testprivate.svg?style=flat)](https://github.com/dimpon/testprivate/releases)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.dimpon/testprivate/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.dimpon/testprivate)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.dimpon/testprivate.svg?label=maven%20central&color=green)](https://search.maven.org/search?q=g:%22io.github.dimpon%22%20AND%20a:%22testprivate%22)
+[![GitHub Release](https://img.shields.io/github/release/dimpon/testprivate.svg?style=flat&color=green)](https://github.com/dimpon/testprivate/releases)
 [![Build Status](https://travis-ci.com/dimpon/testprivate.svg?branch=master)](https://travis-ci.com/dimpon/testprivate)
 [![codecov](https://codecov.io/gh/dimpon/testprivate/branch/master/graph/badge.svg)](https://codecov.io/gh/dimpon/testprivate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
@@ -8,63 +8,129 @@
 
 # Library for testing private methods
 
-That is not a secret that inspite of recomemdations to avoid it depelopers write Unit Tests for private methods.
-It is vitaly important when you refactor legacy code, e.g. with ~1K lines of code classes and cover it with tests.
-Basically there are 3 approaches:  
-1. Change access of tested method to package-private.
-2. Use reflection or some utility classes e.g. Whitebox from Powermock
-3. Use code generation on the fly - e.g. Mockito, Powermock
+That is not a secret that developers write Unit Tests for private methods. That is bad, an evidence that something wrong with design etc
+But we do it.
 
-Here the alternative approach suggested. See the folloging sample. 
+It is vitally important when you refactor legacy code, e.g. with ~1K lines of code classes and cover it with tests.
+The really pure evil is changing access of tested method to package-private.
+  
+Here I offer the alternative solution. May be it will make your code cleaner. See the following sample. 
+
 ```xml
         <dependency>
             <groupId>io.github.dimpon</groupId>
             <artifactId>testprivate</artifactId>
-            <version>0.0.38</version>
+            <version>0.0.40</version>
             <scope>test</scope>
         </dependency>
 ```
-Assume that we have class `ObjectWithPrivateMethod` and it has `private String duplicateString(String in)`.  
-The Unit Test for the private method:
+
+#####Assume that we have a class:
 ```java
-    
-static public class ObjectWithPrivate {
+public class ObjectWithPrivates {
+    private final AtomicInteger count = new AtomicInteger(0);
     private String name;
 
     private String methodToTest(String in) {
-        return in + in;
+        return name + in + count.incrementAndGet();
+    }
+}
+```
+#####Unit Test looks like:
+```java
+interface TestPrivates {
+    void setName(String name);
+    String methodToTest(String in);
+    AtomicInteger getCount();
+}
+
+@Test
+void testPrivates() {
+    ObjectWithPrivates o = new ObjectWithPrivates();
+    TestPrivates testPrivates = API.lookupPrivatesIn(o).usingInterface(TestPrivates.class);
+
+    testPrivates.setName("Andromeda");
+    String in = testPrivates.methodToTest("in");
+    AtomicInteger count = testPrivates.getCount();
+
+    Assertions.assertEquals("Andromedain1", in);
+    Assertions.assertEquals(1, count.get());
+}
+```
+As you can see, we operate private fields and methods like if they were public. Fields of _o_ are changed.
+#####We also can do the same for statics:
+```java
+public class ObjectWithPrivates {
+    private static AtomicInteger count = new AtomicInteger(0);
+    private static String name;
+
+    private static String methodToTest(String in) {
+        return name + in + count.incrementAndGet();
+    }
+}
+```
+#####Unit Test looks like:
+```java
+interface TestPrivates {
+    void setName(String name);
+    String methodToTest(String in);
+    AtomicInteger getCount();
+}
+
+@Test
+void testPrivates() {
+    TestPrivates testPrivates = API.lookupPrivatesIn(ObjectWithPrivates.class).usingInterface(TestPrivates.class);
+
+    testPrivates.setName("Andromeda");
+    String in = testPrivates.methodToTest("in");
+    AtomicInteger count = testPrivates.getCount();
+
+    Assertions.assertEquals("Andromedain1", in);
+    Assertions.assertEquals(1, count.get());
+}
+```
+#####If a private field or method in superclass:
+```java
+public class ObjectWithPrivates {
+    private  AtomicInteger count = new AtomicInteger(0);
+    private  String name;
+
+    private  String methodToTest(String in) {
+        return name + in + count.incrementAndGet();
     }
 }
 
-//test private method
-interface TestPrivateMethod {
-    String methodToTest(String in);
+public class ObjectWithPrivatesSubclass extends ObjectWithPrivates {
 }
-
-
-@Test
-void callPrivateMethod() {
-     ObjectWithPrivate obj = new ObjectWithPrivate();
-     TestPrivateMethod castedObj = lookupPrivatesIn(obj).usingInterface(TestPrivateMethod.class);
-     String result = castedObj.methodToTest("one");
-     Assertions.assertEquals("oneone", result);
-}
-
-//test private field
-interface TestPrivateField {
+```
+use _lookupInSuperclass()_ method!
+#####Unit Test looks like:
+```java
+interface TestPrivates {
     void setName(String name);
-    String getName();
+    String methodToTest(String in);
+    AtomicInteger getCount();
 }
 
 @Test
-void callPrivateField() {
-    ObjectWithPrivate obj = new ObjectWithPrivate();
-    TestPrivateField castedObj = lookupPrivatesIn(obj).usingInterface(TestPrivateField.class);
-    castedObj.setName("Vasya Pupkin");
-    Assertions.assertEquals("Vasya Pupkin", castedObj.getName());
+void testPrivates() {
+    ObjectWithPrivatesSubclass sub = new ObjectWithPrivatesSubclass();
+    TestPrivates testPrivates = API.lookupPrivatesIn(sub).lookupInSuperclass().usingInterface(TestPrivates.class);
+
+    testPrivates.setName("Andromeda");
+    String in = testPrivates.methodToTest("in");
+    AtomicInteger count = testPrivates.getCount();
+
+    Assertions.assertEquals("Andromedain1", in);
+    Assertions.assertEquals(1, count.get());
+}
+```
+#####And a cherry on the torte - creating objects using private constructors:
+```java
+public class ClassC {
+    private ClassC(int a, String b, Object c, Long d) {...}
 }
 
-//create object through private constructor
 @Test
 void createObject() {
     ClassC classC = API.createInstanceOf(ClassC.class).withArguments(new Integer(5), "yo!", new Long(123L), 15L);
@@ -74,11 +140,17 @@ void createObject() {
     Assertions.assertEquals(123L, classC.getC());
     Assertions.assertEquals(15L, classC.getD());
 }
-
-public class ClassC {
-    private ClassC(int a, String b, Object c, Long d) {...}
-}
-
-
 ```
+#####And using private default constructor:
+```java
+@Test
+void createFromPrivateDefault() {
+    ClassD u = API.createInstanceOf(ClassD.class).withArguments();
+    Assertions.assertTrue(u instanceof ClassD);
+
+    Unsafe unsafe = API.createInstanceOf(Unsafe.class).withArguments();
+    Assertions.assertTrue(unsafe instanceof Unsafe);
+}
+```
+Hope it can be useful.
 

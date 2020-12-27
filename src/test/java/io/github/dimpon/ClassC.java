@@ -1,10 +1,10 @@
 package io.github.dimpon;
 
 public class ClassC {
-    private final int a;
-    private final String b;
-    private final Object c;
-    private final Long d;
+    private int a;
+    private String b;
+    private Object c;
+    private Long d;
 
 
     private ClassC(int a, String b, Object c, Long d) {
@@ -28,5 +28,19 @@ public class ClassC {
 
     public Long getD() {
         return d;
+    }
+
+    public String result;
+
+    private ClassC(boolean a, boolean b, Boolean c, Object d) {
+        this.result = "" + a + b + c + d;
+    }
+
+    private ClassC(byte a, byte b, Byte c, Object d) {
+        this.result = "" + a + b + c + d;
+    }
+
+    private ClassC(short a, short b, Short c, Object d) {
+        this.result = "" + a + b + c + d;
     }
 }
