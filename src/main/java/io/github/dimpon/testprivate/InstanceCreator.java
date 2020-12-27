@@ -22,33 +22,148 @@
  * THE SOFTWARE.
  */
 package io.github.dimpon.testprivate;
-public class InstanceCreator<C extends Class<C>> {
-	private C classToInstantiate;
 
-	InstanceCreator(C classToInstantiate) {
-		this.classToInstantiate = classToInstantiate;
-	}
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
-	C withConstructor(Object... args) {
-		return null;
-	}
+/**
+ * class creates an instance of <C> using params passing to {@link InstanceCreator#withArguments}
+ *
+ * @param <C>
+ */
+public class InstanceCreator<C> {
+    private final Class<C> classToInstantiate;
 
-	public static void main(String[] args) {
+    InstanceCreator(Class<C> classToInstantiate) {
+        this.classToInstantiate = classToInstantiate;
+    }
 
-		boolean a1 = int.class.isAssignableFrom(Integer.class);
-		System.out.println(a1);
-		boolean a2 = Integer.class.isAssignableFrom(int.class);
-		System.out.println(a2);
+    public C withArguments(Object... args) {
 
-		boolean a3 = Number.class.isAssignableFrom(Integer.class);
-		System.out.println(a3);
+        final Class<?>[] argsTypes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
 
-		boolean a4 = Integer.class.isAssignableFrom(Number.class);
-		System.out.println(a4);
-		System.out.println();
+        @SuppressWarnings("unchecked")
+        final Constructor<C>[] constructors = (Constructor<C>[]) this.classToInstantiate.getDeclaredConstructors();
 
-		System.out.println(int.class.isPrimitive());
-		System.out.println(Integer.class.isPrimitive());
 
-	}
+        for (Constructor<C> constructor : constructors) {
+            Class<?>[] constrArgTypes = constructor.getParameterTypes();
+
+            if (isMatched(argsTypes, constrArgTypes)) {
+                constructor.setAccessible(true);
+                try {
+                    return constructor.newInstance(args);
+                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                    throw new TestprivateException("No suitable constructor", e);
+                }
+            }
+        }
+
+        throw new TestprivateException("No suitable constructor");
+    }
+
+
+    private static boolean isMatched(Class<?>[] argsTypes, Class<?>[] constrArgTypes) {
+
+        if (argsTypes.length != constrArgTypes.length)
+            return false;
+
+        boolean result = true;
+
+        for (int i = 0; i < constrArgTypes.length; i++) {
+            result &= constrArgTypes[i].isAssignableFrom(argsTypes[i]) | matchingWithPrimitives(argsTypes[i], constrArgTypes[i]);
+        }
+
+        return result;
+    }
+
+    private static boolean matchingWithPrimitives(Class<?> argType, Class<?> constrArgType) {
+        if (!argType.isPrimitive() && !constrArgType.isPrimitive())
+            return false;
+
+        ///
+        if (argType.equals(byte.class) && constrArgType.equals(byte.class))
+            return true;
+
+        if (argType.equals(Byte.class) && constrArgType.equals(byte.class))
+            return true;
+
+        if (argType.equals(byte.class) && constrArgType.equals(Byte.class))
+            return true;
+
+        ///
+        if (argType.equals(short.class) && constrArgType.equals(short.class))
+            return true;
+
+        if (argType.equals(Short.class) && constrArgType.equals(short.class))
+            return true;
+
+        if (argType.equals(short.class) && constrArgType.equals(Short.class))
+            return true;
+
+        ///
+        if (argType.equals(int.class) && constrArgType.equals(int.class))
+            return true;
+
+        if (argType.equals(Integer.class) && constrArgType.equals(int.class))
+            return true;
+
+        if (argType.equals(int.class) && constrArgType.equals(Integer.class))
+            return true;
+
+        ///
+        if (argType.equals(long.class) && constrArgType.equals(long.class))
+            return true;
+
+        if (argType.equals(Long.class) && constrArgType.equals(long.class))
+            return true;
+
+        if (argType.equals(long.class) && constrArgType.equals(Long.class))
+            return true;
+
+        ///
+        if (argType.equals(float.class) && constrArgType.equals(float.class))
+            return true;
+
+        if (argType.equals(Float.class) && constrArgType.equals(float.class))
+            return true;
+
+        if (argType.equals(float.class) && constrArgType.equals(Float.class))
+            return true;
+
+        ///
+        if (argType.equals(double.class) && constrArgType.equals(double.class))
+            return true;
+
+        if (argType.equals(Double.class) && constrArgType.equals(double.class))
+            return true;
+
+        if (argType.equals(double.class) && constrArgType.equals(Double.class))
+            return true;
+
+        ////
+        if (argType.equals(boolean.class) && constrArgType.equals(boolean.class))
+            return true;
+
+        if (argType.equals(Boolean.class) && constrArgType.equals(boolean.class))
+            return true;
+
+        if (argType.equals(boolean.class) && constrArgType.equals(Boolean.class))
+            return true;
+
+        ////
+        if (argType.equals(char.class) && constrArgType.equals(char.class))
+            return true;
+
+        if (argType.equals(Character.class) && constrArgType.equals(char.class))
+            return true;
+
+        if (argType.equals(char.class) && constrArgType.equals(Character.class))
+            return true;
+
+
+        return false;
+    }
+
 }

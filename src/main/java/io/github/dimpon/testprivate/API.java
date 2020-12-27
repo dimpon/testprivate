@@ -52,4 +52,16 @@ public final class API {
 	public static UsingInterface lookupPrivatesIn(Class<?> cla) {
 		return new LookupInClass(cla);
 	}
+
+
+	/**
+	 * Passing class of type C, then we going to instantiate.
+	 *
+	 * @param cla class
+	 * @param <C> type
+	 * @return  @return {@link InstanceCreator} with single method {@link InstanceCreator#withArguments(Object...)} which instantiate the class.
+	 */
+	public static <C> InstanceCreator<C> createInstanceOf(Class<C> cla) {
+		return new InstanceCreator<C>(cla);
+	}
 }
