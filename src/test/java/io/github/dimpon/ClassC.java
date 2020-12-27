@@ -7,7 +7,7 @@ public class ClassC {
     private final Long d;
 
 
-    public ClassC(int a, String b, Object c, Long d) {
+    private ClassC(int a, String b, Object c, Long d) {
         this.a = a;
         this.b = b;
         this.c = c;

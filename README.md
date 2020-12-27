@@ -63,6 +63,23 @@ void callPrivateField() {
     castedObj.setName("Vasya Pupkin");
     Assertions.assertEquals("Vasya Pupkin", castedObj.getName());
 }
+
+//create object through private constructor
+@Test
+void createObject() {
+    ClassC classC = API.createInstanceOf(ClassC.class).withArguments(new Integer(5), "yo!", new Long(123L), 15L);
+
+    Assertions.assertEquals(5, classC.getA());
+    Assertions.assertEquals("yo!", classC.getB());
+    Assertions.assertEquals(123L, classC.getC());
+    Assertions.assertEquals(15L, classC.getD());
+}
+
+public class ClassC {
+    private ClassC(int a, String b, Object c, Long d) {...}
+}
+
+
     
 ```
 
