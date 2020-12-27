@@ -6,12 +6,12 @@
 [![JavaDoc](http://javadoc-badge.appspot.com/io.github.dimpon/testprivate.svg?label=javadoc)](https://javadocio-badges.herokuapp.com/io.github.dimpon/testprivate)
 
 
-# Library for testing private methods
+# Library for testing private methods/fields
 
-That is not a secret that developers write Unit Tests for private methods. That is bad, an evidence that something wrong with design etc
+That is not a secret that developers write Unit Tests for private methods. That is bad, an evidence that something wrong with design, and so on.
 But we do it.
 
-It is vitally important when you refactor legacy code, e.g. with ~1K lines of code classes and cover it with tests.
+For instance, it is vitally important when you refactor legacy code, e.g. with ~1K lines of code classes and cover it with tests.
 The really pure evil is changing access of tested method to package-private.
   
 Here I offer the alternative solution. May be it will make your code cleaner. See the following sample. 
@@ -25,7 +25,7 @@ Here I offer the alternative solution. May be it will make your code cleaner. Se
         </dependency>
 ```
 
-#####Assume that we have a class:
+##### Assume that we have a class:
 ```java
 public class ObjectWithPrivates {
     private final AtomicInteger count = new AtomicInteger(0);
@@ -36,7 +36,7 @@ public class ObjectWithPrivates {
     }
 }
 ```
-#####Unit Test looks like:
+##### Unit Test looks like:
 ```java
 interface TestPrivates {
     void setName(String name);
@@ -58,7 +58,7 @@ void testPrivates() {
 }
 ```
 As you can see, we operate private fields and methods like if they were public. Fields of _o_ are changed.
-#####We also can do the same for statics:
+##### We also can do the same for statics:
 ```java
 public class ObjectWithPrivates {
     private static AtomicInteger count = new AtomicInteger(0);
@@ -69,7 +69,7 @@ public class ObjectWithPrivates {
     }
 }
 ```
-#####Unit Test looks like:
+##### Unit Test looks like:
 ```java
 interface TestPrivates {
     void setName(String name);
@@ -89,7 +89,7 @@ void testPrivates() {
     Assertions.assertEquals(1, count.get());
 }
 ```
-#####If a private field or method in superclass:
+##### If a private field or method in superclass:
 ```java
 public class ObjectWithPrivates {
     private  AtomicInteger count = new AtomicInteger(0);
@@ -104,7 +104,7 @@ public class ObjectWithPrivatesSubclass extends ObjectWithPrivates {
 }
 ```
 use _lookupInSuperclass()_ method!
-#####Unit Test looks like:
+##### Unit Test looks like:
 ```java
 interface TestPrivates {
     void setName(String name);
@@ -125,7 +125,7 @@ void testPrivates() {
     Assertions.assertEquals(1, count.get());
 }
 ```
-#####And a cherry on the torte - creating objects using private constructors:
+##### And a cherry on the torte - creating objects using private constructors:
 ```java
 public class ClassC {
     private ClassC(int a, String b, Object c, Long d) {...}
@@ -141,7 +141,7 @@ void createObject() {
     Assertions.assertEquals(15L, classC.getD());
 }
 ```
-#####And using private default constructor:
+##### And using private default constructor:
 ```java
 @Test
 void createFromPrivateDefault() {
