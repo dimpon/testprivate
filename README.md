@@ -36,7 +36,7 @@ public class ObjectWithPrivates {
     }
 }
 ```
-#### Unit Test looks like:
+#### Unit Test:
 ```java
 interface TestPrivates {
     void setName(String name);
@@ -69,7 +69,7 @@ public class ObjectWithPrivates {
     }
 }
 ```
-#### Unit Test looks like:
+#### Unit Test:
 ```java
 interface TestPrivates {
     void setName(String name);
@@ -104,7 +104,7 @@ public class ObjectWithPrivatesSubclass extends ObjectWithPrivates {
 }
 ```
 use _lookupInSuperclass()_ method!
-#### Unit Test looks like:
+#### Unit Test:
 ```java
 interface TestPrivates {
     void setName(String name);
@@ -125,7 +125,7 @@ void testPrivates() {
     Assertions.assertEquals(1, count.get());
 }
 ```
-#### And a cherry on the torte - creating objects using private constructors:
+#### And cherry on the cake - creating objects using private constructors:
 ```java
 public class ClassC {
     private ClassC(int a, String b, Object c, Long d) {...}
