@@ -149,7 +149,7 @@ void createFromPrivateDefault() {
     ClassD u = API.createInstanceOf(ClassD.class).usingDefaultConstructor();
     Assertions.assertTrue(u instanceof ClassD);
 
-    Unsafe unsafe = API.createInstanceOf(Unsafe.class).withArguments();
+    Unsafe unsafe = API.createInstanceOf(Unsafe.class).usingDefaultConstructor();
     Assertions.assertTrue(unsafe instanceof Unsafe);
 
 }
