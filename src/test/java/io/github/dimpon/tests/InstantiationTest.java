@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import sun.misc.Unsafe;
 
 
+
 public class InstantiationTest {
 
     @Test
@@ -84,7 +85,7 @@ public class InstantiationTest {
 
     @Test
     void createUnsafe() {
-        Unsafe unsafe = API.createInstanceOf(Unsafe.class).withArguments();
+        Unsafe unsafe = API.createInstanceOf(Unsafe.class).usingDefaultConstructor();
         Assertions.assertTrue(unsafe instanceof Unsafe);
     }
 }

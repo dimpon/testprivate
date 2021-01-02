@@ -55,11 +55,11 @@ public final class API {
 
 
 	/**
-	 * Passing class of type C, then we going to instantiate.
+	 * Passing class of C for instantiation object.
 	 *
 	 * @param cla class
 	 * @param <C> type
-	 * @return  @return {@link InstanceCreator} with single method {@link InstanceCreator#withArguments(Object...)} which instantiate the class.
+	 * @return  {@link InstanceCreator} with single method {@link InstanceCreator#withArguments(Object...)} which instantiate the class.
 	 */
 	public static <C> InstanceCreator<C> createInstanceOf(Class<C> cla) {
 		return new InstanceCreator<C>(cla);

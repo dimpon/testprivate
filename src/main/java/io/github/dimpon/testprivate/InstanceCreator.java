@@ -28,9 +28,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 /**
- * class creates an instance of <C> using params passing to {@link InstanceCreator#withArguments}
+ * class creates an instance of C using params passing to {@link InstanceCreator#withArguments}
  *
- * @param <C>
+ * @param <C> type
  */
 public class InstanceCreator<C> {
     private final Class<C> classToInstantiate;
@@ -61,6 +61,10 @@ public class InstanceCreator<C> {
         }
 
         throw new TestprivateException("No suitable constructor");
+    }
+
+    public C usingDefaultConstructor(){
+        return withArguments();
     }
 
 

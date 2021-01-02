@@ -20,7 +20,7 @@ Here I offer an alternative solution. Maybe it will make your code cleaner. But 
 <dependency>
     <groupId>io.github.dimpon</groupId>
     <artifactId>testprivate</artifactId>
-    <version>0.0.40</version>
+    <version>0.0.41</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -128,6 +128,7 @@ void testPrivates() {
 #### And cherry on the cake - creating objects using private constructors:
 ```java
 public class ClassC {
+    private ClassC(){...}
     private ClassC(int a, String b, Object c, Long d) {...}
 }
 
@@ -145,11 +146,12 @@ void createObject() {
 ```java
 @Test
 void createFromPrivateDefault() {
-    ClassD u = API.createInstanceOf(ClassD.class).withArguments();
+    ClassD u = API.createInstanceOf(ClassD.class).usingDefaultConstructor();
     Assertions.assertTrue(u instanceof ClassD);
 
     Unsafe unsafe = API.createInstanceOf(Unsafe.class).withArguments();
     Assertions.assertTrue(unsafe instanceof Unsafe);
+
 }
 ```
 Hope it can be useful.
