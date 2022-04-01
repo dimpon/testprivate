@@ -32,21 +32,21 @@ import java.lang.reflect.Method;
  */
 public final class LookupInClass extends UsingInterface {
 
-    private Class<?> c;
+  private Class<?> c;
 
-    LookupInClass(Class<?> c) {
-        this.c = c;
-    }
+  LookupInClass(Class<?> c) {
+    this.c = c;
+  }
 
+  @Override
+  public InvocationHandler createInvocationHandler() {
+    return new LookupInClass.MethodsHandler();
+  }
+
+  class MethodsHandler implements InvocationHandler {
     @Override
-    public InvocationHandler createInvocationHandler() {
-        return new LookupInClass.MethodsHandler();
+    public Object invoke(Object __, Method method, Object[] args) {
+      return PerformAction.create(c, c, method, args).perform();
     }
-
-    class MethodsHandler implements InvocationHandler {
-        @Override
-        public Object invoke(Object __, Method method, Object[] args) {
-            return PerformAction.create(c, c, method, args).perform();
-        }
-    }
+  }
 }

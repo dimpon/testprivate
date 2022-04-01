@@ -28,17 +28,16 @@ import java.lang.reflect.Proxy;
 
 public abstract class UsingInterface {
 
-	@SuppressWarnings("unchecked")
-	public <T> T usingInterface(Class<T> interfaceClass) {
+  @SuppressWarnings("unchecked")
+  public <T> T usingInterface(Class<T> interfaceClass) {
 
-		if (!interfaceClass.isInterface())
-			throw new TestprivateException("Only interface class can be used for casting");
+    if (!interfaceClass.isInterface()) {throw new TestprivateException("Only interface class can be used for casting");}
 
-		return (T) Proxy.newProxyInstance(
-				this.getClass().getClassLoader(),
-				new Class<?>[]{interfaceClass},
-				createInvocationHandler());
-	}
+    return (T) Proxy.newProxyInstance(
+        this.getClass().getClassLoader(),
+        new Class<?>[] {interfaceClass},
+        createInvocationHandler());
+  }
 
-	protected abstract InvocationHandler createInvocationHandler();
+  protected abstract InvocationHandler createInvocationHandler();
 }

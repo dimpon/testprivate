@@ -41,51 +41,52 @@ import io.github.dimpon.testprivate.MethodResult;
  */
 public final class SetterAction extends ConsiderSuperclass<SetterAction> implements Action {
 
-    @Override
-    public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
+  @Override
+  public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz,
+      @Nonnull Method method, @Nullable Object[] args)
+  {
 
-        Predicate<Method> hasOneArgument = m -> m.getParameterTypes().length == 1;
-        Predicate<Method> isStartsWithSet = m -> m.getName().startsWith("set");
-        Predicate<Method> hasReturnTypeVoid = m -> m.getReturnType().equals(void.class);
+    Predicate<Method> hasOneArgument = m -> m.getParameterTypes().length == 1;
+    Predicate<Method> isStartsWithSet = m -> m.getName().startsWith("set");
+    Predicate<Method> hasReturnTypeVoid = m -> m.getReturnType().equals(void.class);
 
-        Optional<Method> isMethodCorrect = Optional.of(method)
-                .filter(hasOneArgument)
-                .filter(isStartsWithSet)
-                .filter(hasReturnTypeVoid);
+    Optional<Method> isMethodCorrect = Optional.of(method)
+        .filter(hasOneArgument)
+        .filter(isStartsWithSet)
+        .filter(hasReturnTypeVoid);
 
-        if (!isMethodCorrect.isPresent())
-            return Optional.empty();
+      if (!isMethodCorrect.isPresent()) {return Optional.empty();}
 
-        final String fieldName = fieldName(method.getName());
+    final String fieldName = fieldName(method.getName());
 
-        Predicate<Field> hasCorrespondingName = f -> f.getName().equals(fieldName);
-        Predicate<Field> hasCorrespondingType = f -> f.getType().isAssignableFrom(method.getParameterTypes()[0]);
+    Predicate<Field> hasCorrespondingName = f -> f.getName().equals(fieldName);
+    Predicate<Field> hasCorrespondingType = f -> f.getType().isAssignableFrom(method.getParameterTypes()[0]);
 
-        Optional<Field> hasField = Arrays.stream(clazz.getDeclaredFields())
-                .filter(hasCorrespondingName)
-                .filter(hasCorrespondingType)
-                .findFirst();
+    Optional<Field> hasField = Arrays.stream(clazz.getDeclaredFields())
+        .filter(hasCorrespondingName)
+        .filter(hasCorrespondingType)
+        .findFirst();
 
-        if (needToCheckSuperclass(hasField, clazz)) {
-            return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
-        }
-
-        return hasField.map(f -> setFieldValue(obj, f, args));
+    if (needToCheckSuperclass(hasField, clazz)) {
+      return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
     }
 
-    private static String fieldName(String longName) {
-        char[] chars = longName.substring(3).toCharArray();
-        chars[0] = Character.toLowerCase(chars[0]);
-        return new String(chars);
-    }
+    return hasField.map(f -> setFieldValue(obj, f, args));
+  }
 
-    private static MethodResult setFieldValue(Object obj, Field field, Object[] args) {
-        field.setAccessible(true);
-        try {
-            field.set(obj, args[0]);
-            return MethodResult.successful(null);
-        } catch (Throwable e) {
-            return MethodResult.failed();
-        }
+  private static String fieldName(String longName) {
+    char[] chars = longName.substring(3).toCharArray();
+    chars[0] = Character.toLowerCase(chars[0]);
+    return new String(chars);
+  }
+
+  private static MethodResult setFieldValue(Object obj, Field field, Object[] args) {
+    field.setAccessible(true);
+    try {
+      field.set(obj, args[0]);
+      return MethodResult.successful(null);
+    } catch (Exception e) {
+      return MethodResult.failed();
     }
+  }
 }

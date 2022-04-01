@@ -8,14 +8,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ObjectWithPrivatesTest {
 
-interface TestPrivates {
+  interface TestPrivates {
     void setName(String name);
-    String methodToTest(String in);
-    AtomicInteger getCount();
-}
 
-@Test
-void testPrivates() {
+    String methodToTest(String in);
+
+    AtomicInteger getCount();
+  }
+
+  @Test
+  void testPrivates() {
     ObjectWithPrivatesSubclass sub = new ObjectWithPrivatesSubclass();
     TestPrivates testPrivates = API.lookupPrivatesIn(sub).lookupInSuperclass().usingInterface(TestPrivates.class);
 
@@ -25,5 +27,5 @@ void testPrivates() {
 
     Assertions.assertEquals("Andromedain1", in);
     Assertions.assertEquals(1, count.get());
-}
+  }
 }

@@ -28,28 +28,36 @@ package io.github.dimpon.testprivate;
  * Contains whether it successful or not and returned value
  */
 public final class MethodResult {
-    public enum ResultType {
-        SUCCESSFUL,
-        FAILED;
-    }
+  public enum ResultType {
+    SUCCESSFUL,
+    FAILED;
+  }
 
-    private final ResultType resultType;
-    final Object value;
+  private final ResultType resultType;
+  final Object value;
 
-    private MethodResult(ResultType resultType, Object value) {
-        this.resultType = resultType;
-        this.value = value;
-    }
+  private MethodResult(ResultType resultType, Object value) {
+    this.resultType = resultType;
+    this.value = value;
+  }
 
-    public static MethodResult successful(Object value) {
-        return new MethodResult(ResultType.SUCCESSFUL, value);
-    }
+  public static MethodResult successful(Object value) {
+    return new MethodResult(ResultType.SUCCESSFUL, value);
+  }
 
-    public static MethodResult failed() {
-        return new MethodResult(ResultType.FAILED, null);
-    }
+  public static MethodResult failed() {
+    return new MethodResult(ResultType.FAILED, null);
+  }
 
-    boolean isSuccessful() {
-        return resultType == ResultType.SUCCESSFUL;
-    }
+  public static MethodResult failed(Throwable e) {
+    return new MethodResult(ResultType.FAILED, e);
+  }
+
+  boolean isSuccessful() {
+    return resultType == ResultType.SUCCESSFUL;
+  }
+
+  boolean hasException() {
+    return resultType == ResultType.FAILED && (this.value instanceof Throwable);
+  }
 }

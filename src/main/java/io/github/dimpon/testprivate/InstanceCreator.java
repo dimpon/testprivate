@@ -33,85 +33,73 @@ import java.util.Arrays;
  * @param <C> type
  */
 public class InstanceCreator<C> {
-    private final Class<C> classToInstantiate;
+  private final Class<C> classToInstantiate;
 
-    InstanceCreator(Class<C> classToInstantiate) {
-        this.classToInstantiate = classToInstantiate;
-    }
+  InstanceCreator(Class<C> classToInstantiate) {
+    this.classToInstantiate = classToInstantiate;
+  }
 
-    public C withArguments(Object... args) {
+  public C withArguments(Object... args) {
 
-        final Class<?>[] argsTypes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
+    final Class<?>[] argsTypes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
 
-        @SuppressWarnings("unchecked")
-        final Constructor<C>[] constructors = (Constructor<C>[]) this.classToInstantiate.getDeclaredConstructors();
+    @SuppressWarnings("unchecked") final Constructor<C>[] constructors = (Constructor<C>[]) this.classToInstantiate.getDeclaredConstructors();
 
+    for (Constructor<C> constructor : constructors) {
+      Class<?>[] constrArgTypes = constructor.getParameterTypes();
 
-        for (Constructor<C> constructor : constructors) {
-            Class<?>[] constrArgTypes = constructor.getParameterTypes();
-
-            if (isMatched(argsTypes, constrArgTypes)) {
-                constructor.setAccessible(true);
-                try {
-                    return constructor.newInstance(args);
-                } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    throw new TestprivateException("No suitable constructor", e);
-                }
-            }
+      if (isMatched(argsTypes, constrArgTypes)) {
+        constructor.setAccessible(true);
+        try {
+          return constructor.newInstance(args);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+          throw new TestprivateException("No suitable constructor", e);
         }
-
-        throw new TestprivateException("No suitable constructor");
+      }
     }
 
-    public C usingDefaultConstructor(){
-        return withArguments();
+    throw new TestprivateException("No suitable constructor");
+  }
+
+  public C usingDefaultConstructor() {
+    return withArguments();
+  }
+
+  private static boolean isMatched(Class<?>[] argsTypes, Class<?>[] constrArgTypes) {
+
+    if (argsTypes.length != constrArgTypes.length) {return false;}
+
+    boolean result = true;
+
+    for (int i = 0; i < constrArgTypes.length; i++) {
+      result &= constrArgTypes[i].isAssignableFrom(argsTypes[i]) | matchingWithPrimitives(argsTypes[i],
+          constrArgTypes[i]);
     }
 
+    return result;
+  }
 
-    private static boolean isMatched(Class<?>[] argsTypes, Class<?>[] constrArgTypes) {
+  private static boolean matchingWithPrimitives(Class<?> argType, Class<?> constrArgType) {
+    if (!constrArgType.isPrimitive()) {return false;}
 
-        if (argsTypes.length != constrArgTypes.length)
-            return false;
+    ///
+    if (argType.equals(Byte.class) && constrArgType.equals(byte.class)) {return true;}
+    ///
+    if (argType.equals(Short.class) && constrArgType.equals(short.class)) {return true;}
+    ///
+    if (argType.equals(Integer.class) && constrArgType.equals(int.class)) {return true;}
+    ///
+    if (argType.equals(Long.class) && constrArgType.equals(long.class)) {return true;}
+    ///
+    if (argType.equals(Float.class) && constrArgType.equals(float.class)) {return true;}
+    ///
+    if (argType.equals(Double.class) && constrArgType.equals(double.class)) {return true;}
+    ////
+    if (argType.equals(Boolean.class) && constrArgType.equals(boolean.class)) {return true;}
+    ////
+    if (argType.equals(Character.class) && constrArgType.equals(char.class)) {return true;}
 
-        boolean result = true;
-
-        for (int i = 0; i < constrArgTypes.length; i++) {
-            result &= constrArgTypes[i].isAssignableFrom(argsTypes[i]) | matchingWithPrimitives(argsTypes[i], constrArgTypes[i]);
-        }
-
-        return result;
-    }
-
-    private static boolean matchingWithPrimitives(Class<?> argType, Class<?> constrArgType) {
-        if (!constrArgType.isPrimitive())
-            return false;
-
-        ///
-        if (argType.equals(Byte.class) && constrArgType.equals(byte.class))
-            return true;
-        ///
-        if (argType.equals(Short.class) && constrArgType.equals(short.class))
-            return true;
-        ///
-        if (argType.equals(Integer.class) && constrArgType.equals(int.class))
-            return true;
-        ///
-        if (argType.equals(Long.class) && constrArgType.equals(long.class))
-            return true;
-        ///
-        if (argType.equals(Float.class) && constrArgType.equals(float.class))
-            return true;
-        ///
-        if (argType.equals(Double.class) && constrArgType.equals(double.class))
-            return true;
-        ////
-        if (argType.equals(Boolean.class) && constrArgType.equals(boolean.class))
-            return true;
-        ////
-        if (argType.equals(Character.class) && constrArgType.equals(char.class))
-            return true;
-
-        return false;
-    }
+    return false;
+  }
 
 }

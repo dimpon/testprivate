@@ -23,6 +23,7 @@
  */
 package io.github.dimpon.testprivate.actions;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
@@ -40,32 +41,36 @@ import io.github.dimpon.testprivate.MethodResult;
  */
 public final class MethodAction extends ConsiderSuperclass<MethodAction> implements Action {
 
-    @Override
-    public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args) {
+  @Override
+  public Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz,
+      @Nonnull Method method, @Nullable Object[] args)
+  {
 
-        Predicate<Method> hasSameName = m -> m.getName().equals(method.getName());
-        Predicate<Method> hasSameReturnType = m -> m.getReturnType().equals(method.getReturnType());
-        Predicate<Method> hasSameArguments = m -> Arrays.deepEquals(m.getParameterTypes(), method.getParameterTypes());
+    Predicate<Method> hasSameName = m -> m.getName().equals(method.getName());
+    Predicate<Method> hasSameReturnType = m -> m.getReturnType().equals(method.getReturnType());
+    Predicate<Method> hasSameArguments = m -> Arrays.deepEquals(m.getParameterTypes(), method.getParameterTypes());
 
-        Optional<Method> hasMethod = Arrays.stream(clazz.getDeclaredMethods())
-                .filter(hasSameName)
-                .filter(hasSameReturnType)
-                .filter(hasSameArguments)
-                .findFirst();
+    Optional<Method> hasMethod = Arrays.stream(clazz.getDeclaredMethods())
+        .filter(hasSameName)
+        .filter(hasSameReturnType)
+        .filter(hasSameArguments)
+        .findFirst();
 
-        if (needToCheckSuperclass(hasMethod, clazz)) {
-            return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
-        }
-
-        return hasMethod.map(m -> invokeMethod(obj, m, args));
+    if (needToCheckSuperclass(hasMethod, clazz)) {
+      return performAndReturnResult(obj, clazz.getSuperclass(), method, args);
     }
 
-    private static MethodResult invokeMethod(Object obj, Method method, Object[] args) {
-        method.setAccessible(true);
-        try {
-            return MethodResult.successful(method.invoke(obj, args));
-        } catch (Throwable e) {
-            return MethodResult.failed();
-        }
+    return hasMethod.map(m -> invokeMethod(obj, m, args));
+  }
+
+  private static MethodResult invokeMethod(Object obj, Method method, Object[] args) {
+    method.setAccessible(true);
+    try {
+      return MethodResult.successful(method.invoke(obj, args));
+    } catch (InvocationTargetException e) {
+      return MethodResult.failed(e.getCause());
+    } catch (Exception e) {
+      return MethodResult.failed();
     }
+  }
 }

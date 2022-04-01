@@ -34,34 +34,45 @@ import io.github.dimpon.testprivate.actions.SetterAction;
 
 final class PerformAction extends ConsiderSuperclass<PerformAction> {
 
-    private final Object obj;
-    private final Class<?> clazz;
-    private final Method method;
-    private final Object[] args;
+  private final Object obj;
+  private final Class<?> clazz;
+  private final Method method;
+  private final Object[] args;
 
-    private PerformAction(Object obj, Class<?> clazz, Method method, Object[] args) {
-        this.obj = obj;
-        this.clazz = clazz;
-        this.method = method;
-        this.args = args;
+  private PerformAction(Object obj, Class<?> clazz, Method method, Object[] args) {
+    this.obj = obj;
+    this.clazz = clazz;
+    this.method = method;
+    this.args = args;
+  }
+
+  static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
+    return new PerformAction(obj, clazz, method, args);
+  }
+
+  Object perform() {
+    final List<Action> detectors = new ArrayList<>();
+    detectors.add(new MethodAction().considerSuperclass(isConsiderSuperclass));
+    detectors.add(new SetterAction().considerSuperclass(isConsiderSuperclass));
+    detectors.add(new GetterAction().considerSuperclass(isConsiderSuperclass));
+
+    for (Action a : detectors) {
+      Optional<MethodResult> result = a.performAndReturnResult(this.obj, this.clazz, this.method, this.args);
+      if (result.isPresent() && result.get().isSuccessful()) {
+        return result.get().value;
+      }
+      if (result.isPresent() && result.get().hasException()) {
+        Throwable t = (Throwable) result.get().value;
+        throwIt(t);
+      }
     }
 
-    static PerformAction create(Object obj, Class<?> clazz, Method method, Object[] args) {
-        return new PerformAction(obj, clazz, method, args);
-    }
+    throw new TestprivateException(
+        "Method (or field matches to method) " + method + " is not found in original class/object");
+  }
 
-    Object perform() {
-        final List<Action> detectors = new ArrayList<>();
-        detectors.add(new MethodAction().considerSuperclass(isConsiderSuperclass));
-        detectors.add(new SetterAction().considerSuperclass(isConsiderSuperclass));
-        detectors.add(new GetterAction().considerSuperclass(isConsiderSuperclass));
-
-        for (Action a : detectors) {
-            Optional<MethodResult> result = a.performAndReturnResult(this.obj, this.clazz, this.method, this.args);
-            if (result.isPresent() && result.get().isSuccessful())
-                return result.get().value;
-        }
-
-        throw new TestprivateException("Method (or field matches to method) " + method + " is not found in original class/object");
-    }
+  @SuppressWarnings("unchecked")
+  private static <E extends Throwable, R> R throwIt(Throwable t) throws E {
+    throw (E) t;
+  }
 }

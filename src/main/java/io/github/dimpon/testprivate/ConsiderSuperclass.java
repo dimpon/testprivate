@@ -26,15 +26,15 @@ package io.github.dimpon.testprivate;
 import java.util.Optional;
 
 public abstract class ConsiderSuperclass<C extends ConsiderSuperclass<C>> {
-     boolean isConsiderSuperclass = false;
+  boolean isConsiderSuperclass = false;
 
-    @SuppressWarnings("unchecked")
-    protected C considerSuperclass(boolean isConsiderSuperclass) {
-        this.isConsiderSuperclass = isConsiderSuperclass;
-        return (C) this;
-    }
+  @SuppressWarnings("unchecked")
+  protected C considerSuperclass(boolean isConsiderSuperclass) {
+    this.isConsiderSuperclass = isConsiderSuperclass;
+    return (C) this;
+  }
 
-    protected boolean needToCheckSuperclass(Optional<?> optional, Class<?> clazz) {
-        return (isConsiderSuperclass && !optional.isPresent() && clazz.getSuperclass() != null);
-    }
+  protected boolean needToCheckSuperclass(Optional<?> optional, Class<?> clazz) {
+    return (isConsiderSuperclass && !optional.isPresent() && clazz.getSuperclass() != null);
+  }
 }

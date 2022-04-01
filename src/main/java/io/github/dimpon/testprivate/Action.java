@@ -22,6 +22,7 @@
  * THE SOFTWARE.
  */
 package io.github.dimpon.testprivate;
+
 import java.lang.reflect.Method;
 import java.util.Optional;
 
@@ -33,5 +34,6 @@ import javax.annotation.Nullable;
  */
 @FunctionalInterface
 public interface Action {
-	Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method, @Nullable Object[] args);
+  Optional<MethodResult> performAndReturnResult(@Nonnull Object obj, @Nonnull Class<?> clazz, @Nonnull Method method,
+      @Nullable Object[] args);
 }

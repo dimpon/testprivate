@@ -29,39 +29,38 @@ package io.github.dimpon.testprivate;
  * Then, once a method of dynamic proxy is called, the corresponding method of class/object is searched.
  */
 public final class API {
-	private API() {
-	}
+  private API() {
+  }
 
-	/**
-	 * Passing class contains private methods or fields.
-	 *
-	 * @param obj object is intended to be casted.
-	 * @return {@link UsingInterface} with single method {@link UsingInterface#usingInterface(Class)} which returns dynamic proxy of interface.
-	 */
-	public static LookupInSuperclass lookupPrivatesIn(Object obj) {
-		return new LookupInObject(obj);
-	}
+  /**
+   * Passing class contains private methods or fields.
+   *
+   * @param obj object is intended to be casted.
+   * @return {@link UsingInterface} with single method {@link UsingInterface#usingInterface(Class)} which returns dynamic proxy of interface.
+   */
+  public static LookupInSuperclass lookupPrivatesIn(Object obj) {
+    return new LookupInObject(obj);
+  }
 
-	/**
-	 * Passing class contains private methods or fields.
-	 * Need to understand, that static methods of the class will be invoked.
-	 *
-	 * @param cla class is intended to be casted.
-	 * @return {@link UsingInterface} with single method {@link UsingInterface#usingInterface(Class)} which returns dynamic proxy of interface.
-	 */
-	public static UsingInterface lookupPrivatesIn(Class<?> cla) {
-		return new LookupInClass(cla);
-	}
+  /**
+   * Passing class contains private methods or fields.
+   * Need to understand, that static methods of the class will be invoked.
+   *
+   * @param cla class is intended to be casted.
+   * @return {@link UsingInterface} with single method {@link UsingInterface#usingInterface(Class)} which returns dynamic proxy of interface.
+   */
+  public static UsingInterface lookupPrivatesIn(Class<?> cla) {
+    return new LookupInClass(cla);
+  }
 
-
-	/**
-	 * Passing class of C for instantiation object.
-	 *
-	 * @param cla class
-	 * @param <C> type
-	 * @return  {@link InstanceCreator} with single method {@link InstanceCreator#withArguments(Object...)} which instantiate the class.
-	 */
-	public static <C> InstanceCreator<C> createInstanceOf(Class<C> cla) {
-		return new InstanceCreator<C>(cla);
-	}
+  /**
+   * Passing class of C for instantiation object.
+   *
+   * @param cla class
+   * @param <C> type
+   * @return {@link InstanceCreator} with single method {@link InstanceCreator#withArguments(Object...)} which instantiate the class.
+   */
+  public static <C> InstanceCreator<C> createInstanceOf(Class<C> cla) {
+    return new InstanceCreator<C>(cla);
+  }
 }

@@ -32,23 +32,23 @@ import java.lang.reflect.Method;
  */
 public final class LookupInObject extends LookupInSuperclass {
 
-    private Object o;
+  private Object o;
 
-    LookupInObject(Object o) {
-        this.o = o;
-    }
+  LookupInObject(Object o) {
+    this.o = o;
+  }
 
+  @Override
+  public InvocationHandler createInvocationHandler() {
+    return new LookupInObject.MethodsHandler();
+  }
+
+  class MethodsHandler implements InvocationHandler {
     @Override
-    public InvocationHandler createInvocationHandler() {
-        return new LookupInObject.MethodsHandler();
+    public Object invoke(Object __, Method method, Object[] args) {
+      return PerformAction.create(o, o.getClass(), method, args)
+          .considerSuperclass(considerSuperclass)
+          .perform();
     }
-
-    class MethodsHandler implements InvocationHandler {
-        @Override
-        public Object invoke(Object __, Method method, Object[] args) {
-            return PerformAction.create(o, o.getClass(), method, args)
-                    .considerSuperclass(considerSuperclass)
-                    .perform();
-        }
-    }
+  }
 }
