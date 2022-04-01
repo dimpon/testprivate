@@ -34,7 +34,8 @@ deploy:
   - provider: script
     script: >-
       echo "deploy" &&
-      git checkout -f $TRAVIS_BRANCH &&
+      git fetch &&
+      git reset origin/$TRAVIS_BRANCH --hard &&
       ./mvnw clean release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
     cleanup: true
     on:
