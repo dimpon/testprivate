@@ -28,14 +28,15 @@ before_deploy:
   - echo "before_deploy..."
   - ./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\['
   - export project_version=$(./mvnw help:evaluate -N -Dexpression=project.version|grep -v '\[')
+  - echo $project_version
 
 deploy:
 #change version to release, set a tag, increment version to the next snapshot TODO do not build project, just change and commit pom.xml
   - provider: script
     script: >-
-      echo "deploy" &&
-      git fetch &&
-      git reset origin/$TRAVIS_BRANCH --hard &&
+      echo "deploy..." &&
+      echo $TRAVIS_BRANCH &&
+      git checkout -f $TRAVIS_BRANCH &&
       ./mvnw clean release:prepare --settings .travis/settings.xml -Dmaven.test.skip=true -DskipTests -B -U
     cleanup: true
     on:
