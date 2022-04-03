@@ -3,9 +3,7 @@
 [![Build Status](https://travis-ci.com/dimpon/testprivate.svg?branch=master)](https://travis-ci.com/dimpon/testprivate)
 [![codecov](https://codecov.io/gh/dimpon/testprivate/branch/master/graph/badge.svg)](https://codecov.io/gh/dimpon/testprivate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![JavaDoc](http://javadoc-badge.appspot.com/io.github.dimpon/testprivate.svg?label=javadoc)](https://javadocio-badges.herokuapp.com/io.github.dimpon/testprivate)
-
-
+[![javadoc](https://javadoc.io/badge2/io.github.dimpon/testprivate/javadoc.svg)](https://javadoc.io/doc/io.github.dimpon/testprivate)
 # Library for testing private methods/fields
 
 That is not a secret that developers write Unit Tests for private methods. That is bad, an evidence that something wrong with design, and so on.
