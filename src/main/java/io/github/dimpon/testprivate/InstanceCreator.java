@@ -57,7 +57,6 @@ public class InstanceCreator<C> {
         }
       }
     }
-
     throw new TestprivateException("No suitable constructor");
   }
 
@@ -68,9 +67,7 @@ public class InstanceCreator<C> {
   private static boolean isMatched(Class<?>[] argsTypes, Class<?>[] constrArgTypes) {
 
     if (argsTypes.length != constrArgTypes.length) {return false;}
-
     boolean result = true;
-
     for (int i = 0; i < constrArgTypes.length; i++) {
       result &= constrArgTypes[i].isAssignableFrom(argsTypes[i]) | matchingWithPrimitives(argsTypes[i],
           constrArgTypes[i]);

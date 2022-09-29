@@ -138,7 +138,6 @@
                     <useUnlimitedThreads>true</useUnlimitedThreads>
                     <perCoreThreadCount>true</perCoreThreadCount>
                 </configuration>
-
                 <dependencies>
                     <dependency>
                         <groupId>org.junit.platform</groupId>
